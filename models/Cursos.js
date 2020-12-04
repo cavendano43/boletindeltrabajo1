@@ -32,8 +32,11 @@ const CursosSchema = new Schema({
     modulos:Array,
     url:String,
     fecha:Date,
+    fechaformateada:String,
     precio:Number,
-
+    preciodescuento:Number,
+    precioformateado:String,
+    preciodescuentoformateado:String,
 },{
     timestamps:true,
 })

@@ -14,6 +14,7 @@ const ratingSchema = new Schema({
     titulo:String,
     comentario:String,
     recomendacion:String,
+    fechaFormateada:String,
     rating:Number,
 
 },{

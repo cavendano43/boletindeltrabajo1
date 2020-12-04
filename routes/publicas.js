@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer');
 
 /////////////////////////// controllers ///////////////////////
 ///const FiniquitoController = require("../controllers/FiniquitoController");
+const WebpayPlusController = require('../controllers/WebpayNormalController');
 const DocumentosController = require("../controllers/DocumentosController");
 const CapacitacionController = require('../controllers/CapacitacionController');
 ////////////////////////// models ////////////////////////////
@@ -56,7 +57,10 @@ router.get("/",(peticion,respuesta)=>{
     respuesta.send('link https://grupoboletindeltrabajo-b871d.web.app/');
 })
 
-
+/* webpay */
+router.post("/webpay-normal/init", WebpayPlusController.init);
+router.post("/webpay-normal/response", WebpayPlusController.response);
+router.post("/webpay-normal/finish", WebpayPlusController.finish);
 /*router.post("/calculo-finiquito",FiniquitoController.calculo);
 router.post("/carta-finiquito",FiniquitoController.cartaAviso);
 router.post("/generar-finiquito",FiniquitoController.finiquito);*/
@@ -73,6 +77,7 @@ router.get("/eventos",CapacitacionController.eventos);
 /////////////////////// portal de soluciones ///////////////////
 router.get("/documento/:area",DocumentosController.documentos);
 router.get("/documentos/:id",DocumentosController.documentosdetalles);
+
 router.get("/regiones",async(req,res)=>{
     const regiones=await Region.find();
 
