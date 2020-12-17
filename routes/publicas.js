@@ -9,12 +9,12 @@ const nodemailer = require('nodemailer');
 /////////////////////////// controllers ///////////////////////
 ///const FiniquitoController = require("../controllers/FiniquitoController");
 const WebpayPlusController = require('../controllers/WebpayNormalController');
-const DocumentosController = require("../controllers/DocumentosController");
 const CapacitacionController = require('../controllers/CapacitacionController');
+const DocumentosController = require("../controllers/DocumentosController");
+const NoticiasController = require('../controllers/NoticiasController'); 
 ////////////////////////// models ////////////////////////////
 
 const Contacto =require('../models/Contacto');
-const Noticias=require('../models/Noticias');
 const Usuario=require('../models/Usuario');
 const Comentario=require('../models/Comentario');
 const Newsletter=require('../models/Newsletter');
@@ -64,6 +64,14 @@ router.post("/webpay-normal/finish", WebpayPlusController.finish);
 /*router.post("/calculo-finiquito",FiniquitoController.calculo);
 router.post("/carta-finiquito",FiniquitoController.cartaAviso);
 router.post("/generar-finiquito",FiniquitoController.finiquito);*/
+////////////////////// grupoboletindeltrabajo //////////////////
+
+router.get('/noticias/:area/',NoticiasController.noticiasAreas);
+router.get('/ultimas/noticias',NoticiasController.noticiasUltima);
+router.get('/noticias/:area/:id',NoticiasController.noticiasDetalles);
+
+
+
 //////////////////////// capacitacion //////////////////////////
 
 router.get('/cursos-group',CapacitacionController.groupCursos);
@@ -236,52 +244,7 @@ router.post("/contacto",async(req,res)=>{
 
 })
 
-router.get('/noticias/:area/',async(req,res)=>{
-    const busqueda = ( req.query.busqueda ) ? req.query.busqueda : ""
-    const area=req.params.area;
-    let noticias;
-    if(area=="all"){
-        noticias= await Noticias.find({},{_id:1,titulo:1,categoria:1,resumen:1,portada:1,autor:1});
-    }else{
-        noticias= await Noticias.find({categoria:area},{_id:1,titulo:1,categoria:1,resumen:1,portada:1,autor:1});
-    }
 
-    if(noticias){
-        return res.json({noticias})
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
-    }
-
-})
-
-router.get('/ultimas/noticias',async(req,res)=>{
-    const sidebar=[];
-    const noticias= await Noticias.find().sort({fechaEdicion:-1}).limit(3);
-
-
-    if(noticias){
-        return res.json(noticias)
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
-    }
-
-})
-
-router.get('/noticias/:area/:id',async(req,res)=>{
-    const id=req.params.id;
-    const area=req.params.area;
-
-    const noticias = await Noticias.findById(id);
-
-    sumarvisita(id);
-    
-    if(noticias){
-        return res.json(noticias)
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
-    }
-
-})
 
 
 router.get('/comentarios/:id',async(req,res)=>{
@@ -408,9 +371,6 @@ async function encritarpassword(password){
     return hashPassword;
 
 }
-async function sumarvisita(id){
-   const res=await Noticias.findByIdAndUpdate(id,{ $inc: {visitas:1}});
-   return res;
-}
+
 
 module.exports = router

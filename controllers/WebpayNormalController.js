@@ -9,8 +9,6 @@ const transactions = {}
 
 class WebpayPlusController {
   static init (req, res) {
-    res.cookie('nombre',req.body.nombre);
-    req.session.usuario = req.body;
     
     let url = "https://" + req.get("host");
     //saveData(req.body);
@@ -21,7 +19,6 @@ class WebpayPlusController {
     Webpay.initTransaction(
       amount,
       getRandomInt(10000, 99999),
-      req.sessionId,
       url + "/webpay-normal/response",
       url + "/webpay-normal/finish").then((data) => {
       transactions[data.token] = { amount: amount }
@@ -36,7 +33,7 @@ class WebpayPlusController {
     // duplicado en cada método
 
     let token = req.body.token_ws;
-    console.log(req.cookies);
+
 
     Webpay.getTransactionResult(token).then(response => {
       transactions[token] = response
@@ -66,8 +63,7 @@ class WebpayPlusController {
         status = 'REJECTED';
       }
     }
-    console.log(transaction);
-    console.log(status);
+
 
     // Si no se recibió ni token_ws ni TBK_TOKEN, es un usuario que entró directo
     /*if (status === null) {
