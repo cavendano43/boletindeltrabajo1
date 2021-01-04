@@ -8,22 +8,17 @@ const nodemailer = require('nodemailer');
 
 /////////////////////////// controllers ///////////////////////
 ///const FiniquitoController = require("../controllers/FiniquitoController");
+const APIController = require('../controllers/APIController'); 
 const WebpayPlusController = require('../controllers/WebpayNormalController');
 const CapacitacionController = require('../controllers/CapacitacionController');
 const DocumentosController = require("../controllers/DocumentosController");
 const NoticiasController = require('../controllers/NoticiasController'); 
 ////////////////////////// models ////////////////////////////
 
-const Contacto =require('../models/Contacto');
 const Usuario=require('../models/Usuario');
 const Comentario=require('../models/Comentario');
-const Newsletter=require('../models/Newsletter');
-const UsuarioNewsletter=require('../models/UsuarioNewsletter');
-const Cv=require('../models/Cv');
-const Slider =require('../models/Slider');
-const PopUps =require('../models/PopUps');
-const PreguntasFrecuentes=require('../models/PreguntasFrecuentes');
-const Region= require('../models/Region');
+
+
 ///////////////////////////// middleware ///////////////////////////
 const utf8=require('utf8');
 const bcrypt = require ('bcrypt') ;   
@@ -54,7 +49,7 @@ const transporter = nodemailer.createTransport({
 
 
 router.get("/",(peticion,respuesta)=>{
-    respuesta.send('link https://grupoboletindeltrabajo-b871d.web.app/');
+    respuesta.send('link https://grupoboletindeltrabajo.cl/');
 })
 
 /* webpay */
@@ -69,8 +64,16 @@ router.post("/generar-finiquito",FiniquitoController.finiquito);*/
 router.get('/noticias/:area/',NoticiasController.noticiasAreas);
 router.get('/ultimas/noticias',NoticiasController.noticiasUltima);
 router.get('/noticias/:area/:id',NoticiasController.noticiasDetalles);
-
-
+/////////////////////// API /////////////////////////////////
+router.post('/cv',upload.single('cv'),APIController.postCV);
+router.get("/newsletter",APIController.getNewsletter);
+router.get("/newsletter/:id",APIController.getNewsletterDetails);
+router.post("/contacto",APIController.Contacto);
+router.post("/usuariosnewsletter",APIController.postNewsletterUser);
+router.get("/slider/:area",APIController.getSlider);
+router.get("/regiones",APIController.getRegion);
+router.get("/preguntasfrecuentes/:tipo",APIController.getPreguntasFrecuentes);
+router.get('/popups',APIController.getPopUps);
 
 //////////////////////// capacitacion //////////////////////////
 
@@ -78,171 +81,12 @@ router.get('/cursos-group',CapacitacionController.groupCursos);
 router.get('/cursos/row',CapacitacionController.cursosRow);
 router.get('/cursos',CapacitacionController.cursos);
 router.get('/cursosc/:id',CapacitacionController.cursosDetail);
-
 router.post('/rating',CapacitacionController.Postrating);
 router.get('/rating/:id',CapacitacionController.rating);
 router.get("/eventos",CapacitacionController.eventos);
 /////////////////////// portal de soluciones ///////////////////
 router.get("/documento/:area",DocumentosController.documentos);
 router.get("/documentos/:id",DocumentosController.documentosdetalles);
-
-router.get("/regiones",async(req,res)=>{
-    const regiones=await Region.find();
-
-    if(regiones){
-        return res.status(200).json(regiones);
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]});
-    }    
-})
-router.get("/preguntasfrecuentes/:tipo",async(req,res)=>{
-    const tipo=req.params.tipo;
-
-    const pf=await PreguntasFrecuentes.find({tipo:tipo});
-
-    if(pf){
-        res.status(200).json(pf);
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]});
-    }
-
-});
-router.get("/slider/:area",async(req,res)=>{
-    const area=req.params.area;
-    
-    const carousel= await Slider.find({area:area,estado:true}).sort({orden:1});
-
-    if(Slider){
-        res.json(carousel);
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
-    }    
-});
-
-router.get('/popups',async(req,res)=>{
-    const popups=await PopUps.find({estado:true}).sort({orden:1});
-
-    if(popups.length > 0){
-        res.json(popups);
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
-    }
-});
-
-router.get("/newsletter",async(req,res)=>{
-    const nw=await Newsletter.find();
-
-    if(nw){
-        return res.status(200).json(nw);
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]});
-    } 
-})
-router.get("/newsletter/:id",async(req,res)=>{
-    const id=req.params.id;
-    
-    const nw=await Newsletter.findById(id);
-    
-    if(nw){
-        return res.status(200).json(nw);
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]});
-    }
-})
-router.post("/usuariosnewsletter",async(req,res)=>{
-    const email=req.body.subscribeSr;
-    console.log(email);
-    const comprobante=await UsuarioNewsletter.find({email:email});
-    if(comprobante.length > 0){
-    
-        resps={
-            "estatus":0,
-        }
-    }else{
-        const usuarionewsletter={
-            email:email
-        }
-        let usuarionewsletterModel = new UsuarioNewsletter(usuarionewsletter);
-        const respu=usuarionewsletterModel.save();
-        resps={
-            "estatus":1,
-           
-        }
-    }
-   
-    res.json(resps)
-})
-
-router.post('/cv',upload.single('cv'),(req,res)=>{
-
-
-    const cv={
-        nombre:req.body.nombre,
-        email:req.body.email,
-        telefono:req.body.telefono,
-        areas:req.body.areas,
-        mensaje:req.body.mensaje,
-    }
-
-    let cvModel = new Cv(cv);
-
-    if(req.file){
-        const ref=req.file;
-        const filename=ref.filename;
-        cvModel.setCv(filename);
-    }
-
-    cvModel.save();
-
-    const resp={
-        "respuesta":1,
-        "progress":100,
-    }
-
-    return res.status(201).json({resp})
-});
-
-
-router.post("/contacto",async(req,res)=>{
- 
-    let contacto={};
-    if(req.body.apellidos){
-
-        contacto.tipo="cursos";
-        contacto.nombre=req.body.nombre;
-        contacto.apellido=req.body.apellidos;
-        contacto.email=req.body.correo;
-        contacto.asunto="Interes diplomado"
-        contacto.razonsocial=req.body.razonsocial;
-        contacto.direccion=req.body.direccion;
-        contacto.rut=req.body.rut;
-        contacto.telefono=req.body.telefono;     
-        contacto.mensaje=req.body.mensaje;
-        contacto.leido=false;
-        contacto.destacado=false;
- 
-
-    }else{
-        const {nombre,email,asunto,telefono,mensaje} = req.body;
-        contacto.tipo="contacto";
-        contacto.nombre=nombre;
-        contacto.email=email;
-        contacto.asunto=asunto;
-        contacto.telefono=telefono;
-        contacto.mensaje=mensaje;
-        contacto.leido=false;
-        contacto.destacado=false;
-
-    }
-    
-    
-    
-    let contactoModel = new Contacto(contacto);
-    await contactoModel.save();
-    //enviarCorreoBienvenida(email,nombre,asunto,telefono,mensaje);
-    return res.json({"res":1});
-
-})
 
 
 
