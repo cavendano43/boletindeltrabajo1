@@ -129,7 +129,7 @@ class APIController{
 
     static postNewsletterUser = async(req,res)=>{
         const email=req.body.email;
-        console.log(email);
+   
         const comprobante=await UsuarioNewsletter.find({email:email});
         let resps;
         if(comprobante.length > 0){

@@ -32,9 +32,9 @@ class NoticiasController{
         let noticias;
         
         if(area=="all"){
-            noticias= await Noticias.find({},{_id:1,titulo:1,categoria:1,resumen:1,portada:1,autor:1,tags:1,tags1:1,fechaSubida:1,fechaFormateada:1});
+            noticias= await Noticias.find({},{_id:1,titulo:1,categoria:1,resumen:1,portada:1,autor:1,tags:1,tags1:1,fechaSubida:1,fechaFormateada:1}).sort({fechaEdicion:-1});
         }else{
-            noticias= await Noticias.find({categoria:area},{_id:1,titulo:1,categoria:1,resumen:1,portada:1,autor:1,tags:1,tags1:1,fechaSubida:1,fechaFormateada:1});
+            noticias= await Noticias.find({categoria:area},{_id:1,titulo:1,categoria:1,resumen:1,portada:1,autor:1,tags:1,tags1:1,fechaSubida:1,fechaFormateada:1}).sort({fechaEdicion:-1});
         }
         
         if(noticias){
