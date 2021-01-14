@@ -2,6 +2,7 @@
 const Calendario =require('../models/Calendario');
 const Contacto =require('../models/Contacto');
 const Cv=require('../models/Cv');
+const Indicadores = require('../models/Indicadores');
 const PopUps =require('../models/PopUps');
 const Slider =require('../models/Slider');
 const PreguntasFrecuentes=require('../models/PreguntasFrecuentes');
@@ -10,6 +11,9 @@ const Newsletter=require('../models/Newsletter');
 const UsuarioNewsletter=require('../models/UsuarioNewsletter');
 //////////////////// helpers ///////////////////////
 const {enviarCorreo} = require('../helpers/Nodemailer');
+//////////////////// library /////////////////////
+const moment = require('moment');
+moment.locale('es'); 
 
 class APIController{
 
@@ -50,11 +54,83 @@ class APIController{
         return res.json({"res":1});
     }
 
+    static getIndicadoresUltimos = async (req,res)=>{
+        const fc=moment().format('L').toString().split('/');
+        const fca=new Date();
+   
+        const diasemana=fca.getDay();
+        const fecha=`${fc[2]}-${fc[1]}-${fc[0]}`;
+        const fcm=`${fc[2]}-${fc[1]}-01`;
+        const uf=await Indicadores.find({tipo:"UF",fecha:fecha});
+        const utm=await Indicadores.find({tipo:"UTM",fecha:fcm});
+        const ipc=await Indicadores.find({tipo:"I.P.C"}).sort({"fecha":-1}).limit(1);
+        const iipc=await Indicadores.find({tipo:"Índice I.P.C"}).sort({"fecha":-1}).limit(1);
+        const use=await Indicadores.find({tipo:"USE"}).sort({"fecha":-1}).limit(1);
+        const rbmnb=await Indicadores.find({tipo:"RBMN Basica"}).sort({"fecha":-1}).limit(1);
+        const rbmnm=await Indicadores.find({tipo:"RBMN Media"}).sort({"fecha":-1}).limit(1);
+        let dolar,euro;
+        if(diasemana==0 || diasemana==6){
+             dolar=await Indicadores.find({tipo:"Dolar"}).sort({"fecha":-1}).limit(1);
+             euro=await Indicadores.find({tipo:"Euro"}).sort({"fecha":-1}).limit(1);
+        }else{
+            euro=await Indicadores.find({tipo:"Euro",fecha:fecha});
+            dolar=await Indicadores.find({tipo:"Dolar",fecha:fecha});
+        }
+        const data={
+            "dolar":dolar[0].valor,
+            "euro":euro[0].valor,
+            "uf":uf[0].valor,
+            "utm":utm[0].valor,
+            "ipc":ipc[0].valor,
+            "iipc":iipc[0].valor,
+            "use":use[0].valor,
+            "rbmnb":rbmnb[0].valor,
+            "rbmnm":rbmnm[0].valor,
+        }
+        if(data){
+            return res.status(200).json(data);
+        }else{
+            return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
+        }
+        
+    }
+
+    static getIndicadores = async(req,res)=>{
+        const types=req.params.tipo;
+        const anio=req.headers.anio
+        let tipo;
+        let indicador;
+        if(anio==''){
+            if(types=='ipc'){
+                tipo="I.P.C";
+            }
+            if(types=='iipc'){
+                tipo="Índice I.P.C";
+            }
+            if(types=='imm'){
+                tipo='Ingreso Mínimo';
+            }
+            if(types=='utm'){
+                tipo='UTM';
+            }
+            indicador=await Indicadores.find({tipo:tipo}).sort({fecha:1});
+        }else{
+            tipo=types;
+            indicador=await Indicadores.find({tipo:new RegExp(tipo, "i"),anio:anio}).sort({fecha:1});
+        }
+
+        if(indicador){
+            return res.status(200).json(indicador);
+        }else{
+            return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
+        }
+    }
+
     static getCalendario = async(req,res)=>{
         const calendario=await Calendario.find();
         const data={"data":calendario};
         if(calendario.length > 0){
-            res.json(data);
+            res.status(200).json(data);
         }else{
             return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
         }    
@@ -66,7 +142,7 @@ class APIController{
         const carousel= await Slider.find({area:area,estado:true}).sort({orden:1});
 
         if(Slider){
-            res.json(carousel);
+            res.status(200).json(carousel);
         }else{
             return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
         } 
