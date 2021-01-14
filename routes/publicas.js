@@ -66,15 +66,16 @@ router.get('/ultimas/noticias',NoticiasController.noticiasUltima);
 router.get('/noticias/:area/:id',NoticiasController.noticiasDetalles);
 /////////////////////// API /////////////////////////////////
 router.post('/cv',upload.single('cv'),APIController.postCV);
+router.post("/contacto",APIController.Contacto);
 router.get("/newsletter",APIController.getNewsletter);
 router.get("/newsletter/:id",APIController.getNewsletterDetails);
-router.post("/contacto",APIController.Contacto);
+router.get('/indicadoresultimos',APIController.getIndicadoresUltimos);
+router.get('/indicadores/:tipo',APIController.getIndicadores);
 router.post("/usuariosnewsletter",APIController.postNewsletterUser);
 router.get("/slider/:area",APIController.getSlider);
 router.get("/regiones",APIController.getRegion);
 router.get("/preguntasfrecuentes/:tipo",APIController.getPreguntasFrecuentes);
 router.get('/popups',APIController.getPopUps);
-
 //////////////////////// capacitacion //////////////////////////
 
 router.get('/cursos-group',CapacitacionController.groupCursos);
