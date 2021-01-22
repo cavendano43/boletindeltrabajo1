@@ -73,19 +73,20 @@ class APIController{
              dolar=await Indicadores.find({tipo:"Dolar"}).sort({"fecha":-1}).limit(1);
              euro=await Indicadores.find({tipo:"Euro"}).sort({"fecha":-1}).limit(1);
         }else{
-            euro=await Indicadores.find({tipo:"Euro",fecha:fecha});
-            dolar=await Indicadores.find({tipo:"Dolar",fecha:fecha});
+            euro=await Indicadores.find({tipo:"Euro",fecha:fecha}).limit(1);
+            dolar=await Indicadores.find({tipo:"Dolar",fecha:fecha}).limit(1);
         }
+  
         const data={
             "dolar":dolar[0].valor,
             "euro":euro[0].valor,
-            "uf":uf[0].valor,
-            "utm":utm[0].valor,
-            "ipc":ipc[0].valor,
-            "iipc":iipc[0].valor,
-            "use":use[0].valor,
-            "rbmnb":rbmnb[0].valor,
-            "rbmnm":rbmnm[0].valor,
+            "uf":uf ? uf[0].valor:0,
+            "utm":utm ? utm[0].valor:0,
+            "ipc":ipc ? ipc[0].valor:0,
+            "iipc":iipc ? iipc[0].valor:0,
+            "use":use ? use[0].valor:0,
+            "rbmnb":rbmnb ? rbmnb[0].valor:0,
+            "rbmnm":rbmnb ? rbmnm[0].valor:0,
         }
         if(data){
             return res.status(200).json(data);
@@ -94,7 +95,6 @@ class APIController{
         }
         
     }
-
     static getIndicadores = async(req,res)=>{
         const types=req.params.tipo;
         const anio=req.headers.anio

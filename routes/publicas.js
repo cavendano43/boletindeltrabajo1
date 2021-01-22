@@ -9,16 +9,15 @@ const nodemailer = require('nodemailer');
 /////////////////////////// controllers ///////////////////////
 ///const FiniquitoController = require("../controllers/FiniquitoController");
 const APIController = require('../controllers/APIController'); 
+const CartController = require('../controllers/CartController');
 const WebpayPlusController = require('../controllers/WebpayNormalController');
 const CapacitacionController = require('../controllers/CapacitacionController');
 const DocumentosController = require("../controllers/DocumentosController");
-const NoticiasController = require('../controllers/NoticiasController'); 
+const NoticiasController = require('../controllers/NoticiasController');
+const OrdenController = require('../controllers/OrdenController');
 ////////////////////////// models ////////////////////////////
-
 const Usuario=require('../models/Usuario');
 const Comentario=require('../models/Comentario');
-
-
 ///////////////////////////// middleware ///////////////////////////
 const utf8=require('utf8');
 const bcrypt = require ('bcrypt') ;   
@@ -77,7 +76,6 @@ router.get("/regiones",APIController.getRegion);
 router.get("/preguntasfrecuentes/:tipo",APIController.getPreguntasFrecuentes);
 router.get('/popups',APIController.getPopUps);
 //////////////////////// capacitacion //////////////////////////
-
 router.get('/cursos-group',CapacitacionController.groupCursos);
 router.get('/cursos/row',CapacitacionController.cursosRow);
 router.get('/cursos',CapacitacionController.cursos);
@@ -85,12 +83,18 @@ router.get('/cursosc/:id',CapacitacionController.cursosDetail);
 router.post('/rating',CapacitacionController.Postrating);
 router.get('/rating/:id',CapacitacionController.rating);
 router.get("/eventos",CapacitacionController.eventos);
+//////////////// cart //////////////////////
+router.get('/cart/:id',CartController.CartGet);
+router.post('/cart/registrar',CartController.CartPost);
+router.put('/cart/editar',CartController.CartPut);
+router.put('/cart/quality-item',CartController.CartChangeQualityPut);
+router.post('/cart/delete-items',CartController.CartDeleteItem);
+router.delete('/cart/delete-all-items/:id',CartController.CartDeleteAllItems);
+//////////////// orden //////////////////////
+router.post('/cart/post-orden',OrdenController.OrdenPost);
 /////////////////////// portal de soluciones ///////////////////
 router.get("/documento/:area",DocumentosController.documentos);
 router.get("/documentos/:id",DocumentosController.documentosdetalles);
-
-
-
 
 router.get('/comentarios/:id',async(req,res)=>{
    
@@ -104,8 +108,6 @@ router.get('/comentarios/:id',async(req,res)=>{
         return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
     }
 });
-
-
 router.post('/comentario/registrar',async(req,res)=>{
     let avat;
  
