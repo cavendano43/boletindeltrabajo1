@@ -20,11 +20,11 @@ class CartController{
         let ct=parseInt(cantidad)
         
         const cart= await Cart.findById(token);
-        console.log(cart);
+     
         if(cart){
             let items=cart.items;
             let total=0;
-        
+            let quality=0;
             if(items.findIndex(item => item.id === id) > -1){
                 const i=items.findIndex(item => item.id === id);
                 items[i].precio=parseInt(items[i].preciounitario)*ct;
@@ -34,10 +34,11 @@ class CartController{
 
             items.forEach(element=>{
                 total+=element.precio;
+                quality+=element.cantidad;
             })
 
             const totalformateado=formateadordemiles(total);
-            const cantidad=items.length;
+            const cantidad=quality;
             const updatedCart= await Cart.findByIdAndUpdate(token,{items,total,totalformateado,cantidad});
             res.json({"res":true,"data":updatedCart});
         }
@@ -52,7 +53,7 @@ class CartController{
                 let item=cart.items;
                 let items;
                 let total=0;
-      
+                let quality=0;
                 if(item.findIndex(item => item.id === data.id) > -1){
                     const i=item.findIndex(item => item.id === data.id);
                     item[i].precio+=data.precio;
@@ -66,10 +67,11 @@ class CartController{
                 
                 item.forEach(element=>{
                     total+=element.precio;
+                    quality+=element.cantidad;
                 })
                
                 const totalformateado=formateadordemiles(total);
-                const cantidad=items.length;
+                const cantidad=quality;
                 const updatedCart= await Cart.findByIdAndUpdate(id,{items,total,totalformateado,cantidad});
 
                 res.json({"res":data,"data":updatedCart});
@@ -79,9 +81,9 @@ class CartController{
     static CartDeleteItem = async(req,res)=>{
         const id= req.body.id;
         const token = req.body.token;
-  
         const cart= await Cart.findById(token);
         let total=0;
+        let quality=0;
         if(cart){
             let items=cart.items;
             if(items.findIndex(item => item.id === id) > -1){
@@ -90,11 +92,11 @@ class CartController{
             }
             items.forEach(element=>{
                 total+=element.precio;
+                quality+=element.cantidad;
             })
          
             const totalformateado=formateadordemiles(total);
-            const cantidad=items.length;
-      
+            const cantidad=quality;
             const updatedCart= await Cart.findByIdAndUpdate(token,{items,total,totalformateado,cantidad});
         }
         res.status(200).json({"res":true});
