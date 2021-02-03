@@ -4,7 +4,6 @@ const bodyParse = require('body-parser')
 var path = require('path');
 var multer  = require('multer');
 const jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer');
 
 /////////////////////////// controllers ///////////////////////
 ///const FiniquitoController = require("../controllers/FiniquitoController");
@@ -34,21 +33,8 @@ var storage = multer.diskStorage({
    
 var upload = multer({ storage: storage })
 
-const transporter = nodemailer.createTransport({
-    host: process.env.NODEMAILER_HOST,
-    port: process.env.NODEMAILER_PORT,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: process.env.NODEMAILER_USER, // generated ethereal user
-      pass: process.env.NODEMAILER_PASSWORD, // generated ethereal password
-    },tls:{
-        rejectUnauthorized: false
-      }
-  });
-
-
 router.get("/",(peticion,respuesta)=>{
-    respuesta.send('link https://grupoboletindeltrabajo.cl/');
+    respuesta.redirect('https://grupoboletindeltrabajo.cl/');
 })
 
 /* webpay */
@@ -161,36 +147,6 @@ function promesa(cambio){
 
 
 
-async function enviarCorreoBienvenida(email,nombre,asunto,telefono,mensaje){
-  
-    const opciones = {
-      from:'contacto@grupoboletindeltrabajo.cl',
-      to:email,
-      subject: asunto,
-      text:`
-      Nombre: ${nombre}
-      Email: ${email}
-      Asunto: ${asunto} 
-      Telefono: ${telefono}
-      mensaje:
-       ${mensaje}
-      `
-    }
-  
-    await transporter.sendMail(opciones,(error,info)=>{
-
-        if(info){
-            console.log(info)
-            return 1;
-            
-          }else{
-            console.log(error)
-            return 0;
-            
-        }
-    })
-  
-  }
 
 function verifytToken(req,res,next){
     if(!req.headers.authorization){

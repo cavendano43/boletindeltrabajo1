@@ -45,7 +45,6 @@ class APIController{
             contacto.mensaje=mensaje;
             contacto.leido=false;
             contacto.destacado=false;
-
         }
     
         let contactoModel = new Contacto(contacto);
