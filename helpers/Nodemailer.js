@@ -17,7 +17,7 @@ exports.enviarCorreo = async function(nombre,email,telefono,asunto,mensaje){
   
   const opciones = {
     from:process.env.NODEMAILER_USER,
-    to:email,
+    to:process.env.NODEMAILER_USERTO,
     subject: asunto,
     text:`
     Nombre: ${nombre}
