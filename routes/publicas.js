@@ -14,6 +14,9 @@ const CapacitacionController = require('../controllers/CapacitacionController');
 const DocumentosController = require("../controllers/DocumentosController");
 const NoticiasController = require('../controllers/NoticiasController');
 const OrdenController = require('../controllers/OrdenController');
+////////////////////////// models ////////////////////////////
+const Usuario=require('../models/Usuario');
+const Comentario=require('../models/Comentario');
 ///////////////////////////// middleware ///////////////////////////
 const utf8=require('utf8');
 const bcrypt = require ('bcrypt') ;   
@@ -80,6 +83,25 @@ router.post('/cart/post-orden',OrdenController.OrdenPost);
 /////////////////////// portal de soluciones ///////////////////
 router.get("/documento/:area",DocumentosController.documentos);
 router.get("/documentos/:id",DocumentosController.documentosdetalles);
+
+function promesa(cambio){
+    
+    const promesa=new Promise((resolve,reject)=>{
+        if(cambio!=""){
+            resolve(utf8.decode(cambio))
+        }else{
+            reject('');
+        }
+    })
+
+    return promesa;
+
+}
+
+
+
+
+
 
 function verifytToken(req,res,next){
     if(!req.headers.authorization){
