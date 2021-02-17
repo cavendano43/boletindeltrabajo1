@@ -14,9 +14,6 @@ const CapacitacionController = require('../controllers/CapacitacionController');
 const DocumentosController = require("../controllers/DocumentosController");
 const NoticiasController = require('../controllers/NoticiasController');
 const OrdenController = require('../controllers/OrdenController');
-////////////////////////// models ////////////////////////////
-const Usuario=require('../models/Usuario');
-const Comentario=require('../models/Comentario');
 ///////////////////////////// middleware ///////////////////////////
 const utf8=require('utf8');
 const bcrypt = require ('bcrypt') ;   
@@ -45,10 +42,12 @@ router.post("/webpay-normal/finish", WebpayPlusController.finish);
 router.post("/carta-finiquito",FiniquitoController.cartaAviso);
 router.post("/generar-finiquito",FiniquitoController.finiquito);*/
 ////////////////////// grupoboletindeltrabajo //////////////////
-
 router.get('/noticias/:area/',NoticiasController.noticiasAreas);
 router.get('/ultimas/noticias',NoticiasController.noticiasUltima);
 router.get('/noticias/:area/:id',NoticiasController.noticiasDetalles);
+router.get('/comentarios/:id',NoticiasController.getComentario);
+router.post('/comentario/registrar',NoticiasController.postComentario);
+router.put('/comentario/editar',NoticiasController.putReplyComentario);
 /////////////////////// API /////////////////////////////////
 router.post('/cv',upload.single('cv'),APIController.postCV);
 router.post("/contacto",APIController.Contacto);
@@ -81,72 +80,6 @@ router.post('/cart/post-orden',OrdenController.OrdenPost);
 /////////////////////// portal de soluciones ///////////////////
 router.get("/documento/:area",DocumentosController.documentos);
 router.get("/documentos/:id",DocumentosController.documentosdetalles);
-
-router.get('/comentarios/:id',async(req,res)=>{
-   
-    const id=req.params.id;
-
-    const comentario= await Comentario.find({id:id});
-   
-    if(comentario){
-        return res.json(comentario)
-    }else{
-        return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
-    }
-});
-router.post('/comentario/registrar',async(req,res)=>{
-    let avat;
- 
-    let usuario= await Usuario.findOne({email:{$elemMatch:{email:req.body.email}}},{avatar:1,_id:1});
-  
-    if(usuario){
-        avat=`https://portaldesoluciones.cl/${usuario.avatar}`
-    }else{
-        avat='assets/images/avatar/user_icon.png';
-    }
- 
-    let comment={
-
-        "id":req.body.id,
-        "nombre":req.body.nombre,
-        "email":req.body.email,
-        "avatar":avat,
-        "comentario":req.body.comentario,
-        "tipo":req.body.tipo,
-        "reply":req.body.reply,
-        "fecha":req.body.fecha,
-
-    }
-    
-    let comentarioModel=new Comentario(comment);
-    const resp=await comentarioModel.save(); 
-    
-    
-    return res.status(201).json(resp);
-})
-
-
-
-
-
-function promesa(cambio){
-    
-    const promesa=new Promise((resolve,reject)=>{
-        if(cambio!=""){
-            resolve(utf8.decode(cambio))
-        }else{
-            reject('');
-        }
-    })
-
-    return promesa;
-
-}
-
-
-
-
-
 
 function verifytToken(req,res,next){
     if(!req.headers.authorization){

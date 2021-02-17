@@ -19,13 +19,14 @@ class APIController{
 
     static Contacto = async(req,res)=>{
         let contacto={};
+
         if(req.body.apellidos){
 
             contacto.tipo="cursos";
-            contacto.nombre=req.body.nombre;
+            contacto.nombre=req.body.nombres;
             contacto.apellido=req.body.apellidos;
             contacto.email=req.body.correo;
-            contacto.asunto="Interes diplomado"
+            contacto.asunto=`Interes curso ${req.body.titulocurso}`;
             contacto.razonsocial=req.body.razonsocial;
             contacto.direccion=req.body.direccion;
             contacto.rut=req.body.rut;
@@ -46,7 +47,6 @@ class APIController{
             contacto.leido=false;
             contacto.destacado=false;
         }
-    
         let contactoModel = new Contacto(contacto);
         await contactoModel.save();
         enviarCorreo(contacto.email,contacto.nombre,contacto.asunto,contacto.telefono,contacto.mensaje);
@@ -73,9 +73,16 @@ class APIController{
              euro=await Indicadores.find({tipo:"Euro"}).sort({"fecha":-1}).limit(1);
         }else{
             euro=await Indicadores.find({tipo:"Euro",fecha:fecha}).limit(1);
+   
+            if(euro.length == 0){
+                euro=await Indicadores.find({tipo:"Euro"}).sort({"fecha":-1}).limit(1);
+            }
             dolar=await Indicadores.find({tipo:"Dolar",fecha:fecha}).limit(1);
+     
+            if(dolar.length == 0){
+              dolar=await Indicadores.find({tipo:"Dolar"}).sort({"fecha":-1}).limit(1);
+            }
         }
-  
         const data={
             "dolar":dolar[0].valor,
             "euro":euro[0].valor,

@@ -13,6 +13,7 @@ const ComentarioSchema = new Schema({
     comentario:String,
     reply:Array,
     fecha:Date,
+    fechaformateado:String
 
 },{
     timestamps:true,
