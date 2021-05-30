@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/cavendano43/gbt#readme",
   "dependencies": {
-    "aws-sdk": "^2.799.0",
+    "aws-sdk": "^2.918.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
