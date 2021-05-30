@@ -1,9 +1,8 @@
 const express = require('express')
-const router = express.Router()
-const bodyParse = require('body-parser')
+const router = express.Router();
 var path = require('path');
 var multer  = require('multer');
-const jwt = require('jsonwebtoken')
+//const jwt = require('jsonwebtoken')
 
 /////////////////////////// controllers ///////////////////////
 ///const FiniquitoController = require("../controllers/FiniquitoController");
@@ -14,12 +13,8 @@ const CapacitacionController = require('../controllers/CapacitacionController');
 const DocumentosController = require("../controllers/DocumentosController");
 const NoticiasController = require('../controllers/NoticiasController');
 const OrdenController = require('../controllers/OrdenController');
-////////////////////////// models ////////////////////////////
-const Usuario=require('../models/Usuario');
-const Comentario=require('../models/Comentario');
+
 ///////////////////////////// middleware ///////////////////////////
-const utf8=require('utf8');
-const bcrypt = require ('bcrypt') ;   
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -85,7 +80,7 @@ router.get("/documento/:area",DocumentosController.documentos);
 router.get("/documentos/:id",DocumentosController.documentosdetalles);
 
 
-function verifytToken(req,res,next){
+/*function verifytToken(req,res,next){
     if(!req.headers.authorization){
         return res.status(401).send('Uthorize Request');
     }
@@ -110,7 +105,7 @@ async function encritarpassword(password){
 
     return hashPassword;
 
-}
+}*/
 
 
 module.exports = router
