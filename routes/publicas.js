@@ -2,21 +2,20 @@ const express = require('express')
 const router = express.Router();
 var path = require('path');
 var multer  = require('multer');
-//const jwt = require('jsonwebtoken')
+
 
 /////////////////////////// controllers ///////////////////////
 ///const FiniquitoController = require("../controllers/FiniquitoController");
-/*const APIController = require('../controllers/APIController'); 
+const APIController = require('../controllers/APIController'); 
 const CartController = require('../controllers/CartController');
 //const WebpayPlusController = require('../controllers/WebpayNormalController');
 const CapacitacionController = require('../controllers/CapacitacionController');
 const DocumentosController = require("../controllers/DocumentosController");
 const NoticiasController = require('../controllers/NoticiasController');
 const OrdenController = require('../controllers/OrdenController');
-*/
 ///////////////////////////// middleware ///////////////////////////
 
-/*var storage = multer.diskStorage({
+var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, './public/storage/cv/')
     },
@@ -27,7 +26,7 @@ const OrdenController = require('../controllers/OrdenController');
 
    
 var upload = multer({ storage: storage })
-*/
+
 router.get("/",(req,res)=>{
     res.redirect('https://grupoboletindeltrabajo.cl/');
 })
@@ -35,12 +34,12 @@ router.get("/",(req,res)=>{
 /* webpay 
 router.post("/webpay-normal/init", WebpayPlusController.init);
 router.post("/webpay-normal/response", WebpayPlusController.response);
-router.post("/webpay-normal/finish", WebpayPlusController.finish);*/
-/*router.post("/calculo-finiquito",FiniquitoController.calculo);
+router.post("/webpay-normal/finish", WebpayPlusController.finish);
+router.post("/calculo-finiquito",FiniquitoController.calculo);
 router.post("/carta-finiquito",FiniquitoController.cartaAviso);
 router.post("/generar-finiquito",FiniquitoController.finiquito);*/
 ////////////////////// grupoboletindeltrabajo //////////////////
-/*router.get('/noticias/:area/',NoticiasController.noticiasAreas);
+router.get('/noticias/:area/',NoticiasController.noticiasAreas);
 router.get('/ultimas/noticias',NoticiasController.noticiasUltima);
 router.get('/noticias/:area/:id',NoticiasController.noticiasDetalles);
 router.get('/comentarios/:id',NoticiasController.getComentario);
@@ -78,34 +77,5 @@ router.post('/cart/post-orden',OrdenController.OrdenPost);
 /////////////////////// portal de soluciones ///////////////////
 router.get("/documento/:area",DocumentosController.documentos);
 router.get("/documentos/:id",DocumentosController.documentosdetalles);
-
-
-/*function verifytToken(req,res,next){
-    if(!req.headers.authorization){
-        return res.status(401).send('Uthorize Request');
-    }
-    
-    const token = req.headers.authorization.split(' ')[1];
-    if(toke === 'null'){
-        return res.status(401).send('Unathorize Request');
-    }
-
-    const payload= jwt.verify(token,'secretKey');
-    req.userId = payload._id;
-    next();
-
-    console.log(payload);
-}
-
-async function encritarpassword(password){
-
-    const saltRounds = 10;
-
-    const hashPassword= await bcrypt.hash(password,saltRounds);
-
-    return hashPassword;
-
-}*/
-
 
 module.exports = router

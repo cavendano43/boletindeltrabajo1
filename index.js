@@ -1,7 +1,6 @@
 const express= require('express');
 const Port = process.env.PORT || 4000;
 const cors = require('cors');
-const bodyParse = require('body-parser');
 
 //// inicializacion///
 const app= express();
