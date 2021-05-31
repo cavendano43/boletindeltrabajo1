@@ -53,9 +53,6 @@ class CapacitacionController{
 
     }
 
- 
-
-    
     static cursosMostrar = async(req,res)=>{
         const cursos= await Cursos.find();
     

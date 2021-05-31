@@ -6,17 +6,17 @@ var multer  = require('multer');
 
 /////////////////////////// controllers ///////////////////////
 ///const FiniquitoController = require("../controllers/FiniquitoController");
-const APIController = require('../controllers/APIController'); 
+/*const APIController = require('../controllers/APIController'); 
 const CartController = require('../controllers/CartController');
 //const WebpayPlusController = require('../controllers/WebpayNormalController');
 const CapacitacionController = require('../controllers/CapacitacionController');
 const DocumentosController = require("../controllers/DocumentosController");
 const NoticiasController = require('../controllers/NoticiasController');
 const OrdenController = require('../controllers/OrdenController');
-
+*/
 ///////////////////////////// middleware ///////////////////////////
 
-var storage = multer.diskStorage({
+/*var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, './public/storage/cv/')
     },
@@ -27,9 +27,9 @@ var storage = multer.diskStorage({
 
    
 var upload = multer({ storage: storage })
-
-router.get("/",(peticion,respuesta)=>{
-    respuesta.redirect('https://grupoboletindeltrabajo.cl/');
+*/
+router.get("/",(req,res)=>{
+    res.redirect('https://grupoboletindeltrabajo.cl/');
 })
 
 /* webpay 
@@ -40,7 +40,7 @@ router.post("/webpay-normal/finish", WebpayPlusController.finish);*/
 router.post("/carta-finiquito",FiniquitoController.cartaAviso);
 router.post("/generar-finiquito",FiniquitoController.finiquito);*/
 ////////////////////// grupoboletindeltrabajo //////////////////
-router.get('/noticias/:area/',NoticiasController.noticiasAreas);
+/*router.get('/noticias/:area/',NoticiasController.noticiasAreas);
 router.get('/ultimas/noticias',NoticiasController.noticiasUltima);
 router.get('/noticias/:area/:id',NoticiasController.noticiasDetalles);
 router.get('/comentarios/:id',NoticiasController.getComentario);
