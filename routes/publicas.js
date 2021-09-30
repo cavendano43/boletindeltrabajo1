@@ -74,6 +74,7 @@ router.delete('/cart/delete-all-items/:id',CartController.CartDeleteAllItems);
 //////////////// orden //////////////////////
 router.post('/cart/post-orden',OrdenController.OrdenPost);
 /////////////////////// portal de soluciones ///////////////////
+router.get("/calendario",APIController.getCalendario);
 router.get("/documento/:area",DocumentosController.documentos);
 router.get("/documentos/:id",DocumentosController.documentosdetalles);
 
