@@ -142,6 +142,18 @@ class APIController{
             return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
         }    
     }
+    
+    static getCalendarioById = async(req,res)=>{
+        const anio = req.params.anio;
+        const fecha = `/.*${anio}.*/`:
+        const calendario=await Calendario.find({"fecha":fecha});
+        const data={"data":calendario};
+        if(calendario.length > 0){
+            res.status(200).json(data);
+        }else{
+            return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
+        }
+    }
 
     static getSlider = async(req,res)=>{
         const area=req.params.area;
