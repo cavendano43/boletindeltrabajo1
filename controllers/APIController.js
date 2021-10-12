@@ -145,7 +145,7 @@ class APIController{
     
     static getCalendarioById = async(req,res)=>{
         const anio = req.params.anio;
-        const fecha = `/.*${anio}.*/`:
+        const fecha = `/.*${anio}.*/`;
         const calendario=await Calendario.find({"fecha":fecha});
         const data={"data":calendario};
         if(calendario.length > 0){
