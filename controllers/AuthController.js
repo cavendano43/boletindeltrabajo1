@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const _ = require('lodash');
+const { passwordCompare, compareUserVence } = require('../helpers/users.helper');
 ////////////// helpers ///////////////////////
 const { enviarCorreo,sendMail } = require('../helpers/Nodemailer');
 ///////////// models ////////////////////////
@@ -8,63 +9,65 @@ const Usuario = require('../models/Usuario');
 
 class AuthController{
     
-    static singIn = async(req,res)=>{
+    static signIn = async(req,res)=>{
         const { email, password } = req.body;
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            const firstError = errors.array().map(error => error.msg)[0];
-            return res.status(422).json({
-            errors: firstError
+       
+        try{
+      
+          const user = await Usuario.findOne({email})
+             if (!user) {
+                return res.status(400).json({
+                "code":400,
+                "status":false,
+                "message":"Usuario no existe. Por favor regístrese",
+                });
+             }
+          // authenticate
+          const hash = passwordCompare(password,user);
+          if (!hash) {
+              return res.status(400).json({
+                "code":400,  
+                "status":false,
+                "message":"Contraseña no incorrecta",
+              });
+          }
+          const vence = compareUserVence(user.fechainicio,user.fechavencimiento);
+          if(!vence) {
+            return res.status(400).json({
+              "code":400,  
+              "status":false,
+              "message":"Usuario Vencido por favor renovar contrato",
             });
-        }else{
-            Usuario.findOne({
-                email
-            }).exec(async (err, user) => {
-            
-                if (err || !user) {
-                    return res.status(400).json({
-                    "res":false,
-                    "message":"El usuario con ese correo electrónico no existe. Por favor regístrese",
-                    errors: 'El usuario con ese correo electrónico no existe. Por favor regístrese'
-                    });
-                }
-                // authenticate
-                if (!user.authenticate(password)) {
-                    return res.status(400).json({
-                    "res":false,
-                    "message":"Correo electrónico y contraseña no coinciden",
-                    errors: 'Correo electrónico y contraseña no coinciden'
-                    });
-                }
-                const id=user._id;
-                const token = jwt.sign(
-                    {
-                    _id: user._id,
-                    nombre:user.nombre,
-                    apellido:user.apellido,
-                    email: user.email[0],
-                    avatar: user.avatar,
-                    razonsocial: user.razonsocial,
-                    estado: user.estado,
-                    visitas: user.visitas,
-                    rol: user.rol,
-                    contrasena:user.contrasena
-                    },
-                    process.env.JWT_SECRET,
-                    {
-                    expiresIn: '7d'
-                    }
-                );
-                const resp=await Usuario.findByIdAndUpdate(id,{ $inc: {visitas:1}});
-                return res.status(200).json({"token":token});
-
-            });
+          }
+          const id=user._id;
+          const token = jwt.sign(
+              {
+              _id: user._id,
+              nombre:user.nombre,
+              apellido:user.apellido,
+              email: user.email,
+              avatar: user.avatar,
+              razonsocial: user.razonsocial,
+              estado: user.estado,
+              visitas: user.visitas,
+              rol: user.rol,
+              password:user.hashpassword
+              },
+                process.env.JWT_SECRET,
+              {
+              expiresIn: process.env.JWT_EXPIRE
+              }
+          );
+          const resp=await Usuario.findByIdAndUpdate(id,{ $inc: {visitas:1}});
+          return res.status(200).json({code:200,status:true,token});
+          
+        } catch(e) {
+          res.status(400).json({code:400,state:false,message:"error del sistema"});
         }
-
     }
+    
 
-    static singUp = async(req,res)=>{
+    static signUp = async(req,res)=>{
         const { nombre, apellido, razonsocial, rut, email, telefono, direccion, region, comuna } = req.body;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -97,9 +100,9 @@ class AuthController{
             },(err, user) => {
                 if (err || !user) {
                     return res.status(400).json({
-                      "res":false,
+                      "code":400,
+                      "status":false,
                       "message":"El usuario con ese correo electrónico no existe",
-                       error: 'El usuario con ese correo electrónico no existe'
                     });
                 }
                 const token = jwt.sign(

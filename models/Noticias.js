@@ -16,7 +16,7 @@ const NoticiasSchema = new Schema({
     contenido:String,
     visitas:Number,
     estado:Boolean,
-    fechaEdicion:Date,
+    fechaEdicion:String,
     fechaSubida:String,
     fechaFormateada:String,
 

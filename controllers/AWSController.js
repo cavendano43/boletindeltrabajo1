@@ -1,4 +1,4 @@
-class AWSController{
+class AWSController {
    
 }
 module.exports = AWSController;

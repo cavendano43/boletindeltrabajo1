@@ -1,7 +1,4 @@
 const { Schema, model } = require('mongoose');
-const { stringify } = require('querystring');
-
-
 
 
 const CvSchema = new Schema({
