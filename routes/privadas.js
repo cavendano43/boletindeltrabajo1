@@ -4,6 +4,7 @@ const router = express.Router();
 const upload = require('../helpers/MulterAdmin.helper');
 ////////// controllers /////////
 const AdminController = require ('../controllers/AdminController');
+router.get('/ferido-legal',AdminController.getFeriadoLegal);
 router.get('/newsletter',AdminController.getNewsletter);
 router.delete('/newsletter/eliminar-all',AdminController.deleteNewsletterAll);
 router.get('/usuario',AdminController.getUser);

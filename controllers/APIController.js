@@ -9,6 +9,7 @@ const PreguntasFrecuentes=require('../models/PreguntasFrecuentes');
 const Region= require('../models/Region');
 const Newsletter=require('../models/Newsletter');
 const UsuarioNewsletter=require('../models/UsuarioNewsletter');
+const FeriadoLegal = require('../models/FeriadoLegal');
 //////////////////// helpers ///////////////////////
 const {enviarCorreo} = require('../helpers/Nodemailer');
 //////////////////// library /////////////////////
@@ -16,7 +17,14 @@ const moment = require('moment');
 moment.locale('es'); 
 
 class APIController{
-
+    static getFeriadoLegal = async(req,res)=>{
+        try{
+            const response = await FeriadoLegal.find();
+            return res.status(200).send({code:200,status:true,payload:response});
+        } catch(e) {
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+        }
+    }
     static Contacto = async(req,res)=>{
         let contacto={};
 
@@ -54,82 +62,87 @@ class APIController{
     }
 
     static getIndicadoresUltimos = async (req,res)=>{
-        
-        const fc=moment().format('L').toString().split('/');
-        const fca=new Date();
-   
-        const diasemana=fca.getDay();
-        const fecha=`${fc[2]}-${fc[1]}-${fc[0]}`;
-        const fcm=`${fc[2]}-${fc[1]}-01`;
-        const uf=await Indicadores.find({tipo:"UF",fecha:fecha});
-        const utm=await Indicadores.find({tipo:"UTM",fecha:fcm});
-        const ipc=await Indicadores.find({tipo:"I.P.C"}).sort({"fecha":-1}).limit(1);
-        const iipc=await Indicadores.find({tipo:"Índice I.P.C"}).sort({"fecha":-1}).limit(1);
-        const use=await Indicadores.find({tipo:"USE"}).sort({"fecha":-1}).limit(1);
-        const rbmnb=await Indicadores.find({tipo:"RBMN Basica"}).sort({"fecha":-1}).limit(1);
-        const rbmnm=await Indicadores.find({tipo:"RBMN Media"}).sort({"fecha":-1}).limit(1);
-        let dolar,euro;
-        if(diasemana==0 || diasemana==6){
-             dolar=await Indicadores.find({tipo:"Dolar"}).sort({"fecha":-1}).limit(1);
-             euro=await Indicadores.find({tipo:"Euro"}).sort({"fecha":-1}).limit(1);
-        }else{
-            euro=await Indicadores.find({tipo:"Euro",fecha:fecha}).limit(1);
-   
-            if(euro.length === 0){
+        try{
+           
+            const fc=moment().format('L').toString().split('/');
+            const fca=new Date();
+    
+            const diasemana=fca.getDay();
+            const fecha=`${fc[2]}-${fc[1]}-${fc[0]}`;
+            const fcm=`${fc[2]}-${fc[1]}-01`;
+            const uf=await Indicadores.find({tipo:"UF",fecha:fecha});
+            const utm=await Indicadores.find({tipo:"UTM",fecha:fcm});
+            const ipc=await Indicadores.find({tipo:"I.P.C"}).sort({"fecha":-1}).limit(1);
+            const iipc=await Indicadores.find({tipo:"Índice I.P.C"}).sort({"fecha":-1}).limit(1);
+            const use=await Indicadores.find({tipo:"USE"}).sort({"fecha":-1}).limit(1);
+            const rbmnb=await Indicadores.find({tipo:"RBMN Basica"}).sort({"fecha":-1}).limit(1);
+            const rbmnm=await Indicadores.find({tipo:"RBMN Media"}).sort({"fecha":-1}).limit(1);
+            const imm=await Indicadores.findOne({tipo:"Ingreso Mínimo"}).sort({"fecha":-1}).limit(1);
+          
+            let dolar,euro;
+            if(diasemana==0 || diasemana==6){
+                dolar=await Indicadores.find({tipo:"Dolar"}).sort({"fecha":-1}).limit(1);
                 euro=await Indicadores.find({tipo:"Euro"}).sort({"fecha":-1}).limit(1);
-            }
-            dolar=await Indicadores.find({tipo:"Dolar",fecha:fecha}).limit(1);
-     
-            if(dolar.length === 0){
-              dolar=await Indicadores.find({tipo:"Dolar"}).sort({"fecha":-1}).limit(1);
-            }
-        }
-        const data={
-            "dolar":dolar[0].valor,
-            "euro":euro[0].valor,
-            "uf":uf.length !== 0 ? uf[0].valor:0,
-            "utm":utm.length !== 0 ? utm[0].valor:0,
-            "ipc":ipc.length !== 0 ? ipc[0].valor:0,
-            "iipc":iipc.length !== 0 ? iipc[0].valor:0,
-            "use":use.length !== 0 ? use[0].valor:0,
-            "rbmnb":rbmnb.length !== 0 ? rbmnb[0].valor:0,
-            "rbmnm":rbmnb.length !== 0 ? rbmnm[0].valor:0,
-        }
-        if(data){
-            return res.status(200).json(data);
-        }else{
-            return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
-        }
+            }else{
+                euro=await Indicadores.find({tipo:"Euro",fecha:fecha}).limit(1);
+    
+                if(euro.length === 0){
+                    euro=await Indicadores.find({tipo:"Euro"}).sort({"fecha":-1}).limit(1);
+                }
+                dolar=await Indicadores.find({tipo:"Dolar",fecha:fecha}).limit(1);
         
+                if(dolar.length === 0){
+                dolar=await Indicadores.find({tipo:"Dolar"}).sort({"fecha":-1}).limit(1);
+                }
+            }
+            const data={
+                "dolar":dolar[0].valor,
+                "euro":euro[0].valor,
+                "uf":uf.length !== 0 ? uf[0].valor:0,
+                "utm":utm.length !== 0 ? utm[0].valor:0,
+                "ipc":ipc.length !== 0 ? ipc[0].valor:0,
+                "iipc":iipc.length !== 0 ? iipc[0].valor:0,
+                "use":use.length !== 0 ? use[0].valor:0,
+                "rbmnb":rbmnb.length !== 0 ? rbmnb[0].valor:0,
+                "rbmnm":rbmnb.length !== 0 ? rbmnm[0].valor:0,
+                "imm":imm.valores[0].regimengeneral
+            }
+            return res.status(200).json({code:200,status:true,payload:data});
+        } catch(e) {
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+        }
+           
     }
     static getIndicadores = async(req,res)=>{
-        const types=req.params.tipo;
-        const anio=req.headers.anio
-        let tipo;
-        let indicador;
-        if(anio==''){
-            if(types=='ipc'){
-                tipo="I.P.C";
+        try{
+            const types=req.params.tipo;
+            const anio=req.headers.anio
+            let tipo;
+            let indicador;
+            if(anio==''){
+                if(types=='ipc'){
+                    tipo="I.P.C";
+                }
+                if(types=='iipc'){
+                    tipo="Índice I.P.C";
+                }
+                if(types=='imm'){
+                    tipo='Ingreso Mínimo';
+                }
+                if(types=='utm'){
+                    tipo='UTM';
+                }
+                indicador=await Indicadores.find({tipo:tipo}).sort({fecha:1});
+            }else{
+                tipo=types;
+                indicador=await Indicadores.find({tipo:new RegExp(tipo, "i"),anio:anio}).sort({fecha:1});
             }
-            if(types=='iipc'){
-                tipo="Índice I.P.C";
-            }
-            if(types=='imm'){
-                tipo='Ingreso Mínimo';
-            }
-            if(types=='utm'){
-                tipo='UTM';
-            }
-            indicador=await Indicadores.find({tipo:tipo}).sort({fecha:1});
-        }else{
-            tipo=types;
-            indicador=await Indicadores.find({tipo:new RegExp(tipo, "i"),anio:anio}).sort({fecha:1});
-        }
 
-        if(indicador){
-            return res.status(200).json(indicador);
-        }else{
-            return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
+            if(indicador){
+                return res.status(200).json(indicador);
+            }
+        } catch(e) {
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
         }
     }
 
@@ -144,14 +157,13 @@ class APIController{
     }
     
     static getCalendarioById = async(req,res)=>{
-        const anio = req.params.anio;
-        const fecha = `/.*${anio}.*/`;
-        const calendario=await Calendario.find({"fecha":fecha});
-        const data={"data":calendario};
-        if(calendario.length > 0){
-            res.status(200).json(data);
-        }else{
-            return res.status(404).send({errors:["No se encuentra esa Publicacíon"]})
+        try{
+            const anio = req.params.anio;
+            const fecha = new RegExp(`.*${anio}.*`);
+            const calendario=await Calendario.find({"fecha":fecha});
+            res.status(200).json({code:200,status:true,payload:calendario});
+        }catch(e){
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
         }
     }
 

@@ -1,8 +1,6 @@
 const { Schema, model } = require('mongoose');
 
 
-
-
 const popupsSchema = new Schema({
 
     titulo:String,

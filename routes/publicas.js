@@ -4,7 +4,7 @@ var path = require('path');
 var multer  = require('multer');
 
 /////////////////////////// controllers ///////////////////////
-///const FiniquitoController = require("../controllers/FiniquitoController");
+const FiniquitoController = require("../controllers/FiniquitoController");
 const APIController = require('../controllers/APIController'); 
 const CartController = require('../controllers/CartController');
 //const WebpayPlusController = require('../controllers/WebpayNormalController');
@@ -30,13 +30,17 @@ router.get("/",(req,res)=>{
     res.redirect('https://grupoboletindeltrabajo.cl/');
 })
 
+
+  // tipo de contrato mensual dividir por 1, quincenal dividir por 2, semanal dividir por 30/7, diario dividir por 30
+
 /* webpay 
 router.post("/webpay-normal/init", WebpayPlusController.init);
 router.post("/webpay-normal/response", WebpayPlusController.response);
 router.post("/webpay-normal/finish", WebpayPlusController.finish);
 router.post("/calculo-finiquito",FiniquitoController.calculo);
-router.post("/carta-finiquito",FiniquitoController.cartaAviso);
+
 router.post("/generar-finiquito",FiniquitoController.finiquito);*/
+router.post("/carta-finiquito",FiniquitoController.cartaAviso);
 ////////////////////// grupoboletindeltrabajo //////////////////
 router.get('/noticias/:area/',NoticiasController.noticiasAreas);
 router.get('/ultimas/noticias',NoticiasController.noticiasUltima);
@@ -56,6 +60,7 @@ router.get("/slider/:area",APIController.getSlider);
 router.get("/regiones",APIController.getRegion);
 router.get("/preguntasfrecuentes/:tipo",APIController.getPreguntasFrecuentes);
 router.get('/popups',APIController.getPopUps);
+router.get('/ferido-legal',APIController.getFeriadoLegal);
 //////////////////////// capacitacion //////////////////////////
 router.get('/cursos-group',CapacitacionController.groupCursos);
 router.get('/cursos/row',CapacitacionController.cursosRow);
