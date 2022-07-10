@@ -1,5 +1,5 @@
 var pdf = require('html-pdf');
-const {FileUploadS3} = require('./AWS-Helper.js');
+//const {FileUploadS3} = require('./AWS-Helper.js');
 
 exports.generarPDF = async  (html,name)=>{
     try{
