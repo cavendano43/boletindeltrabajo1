@@ -1,5 +1,5 @@
 const express= require('express');
-const Port = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;
 const cors = require('cors');
 
 //// inicializacion///
@@ -19,6 +19,6 @@ app.use(rutaspublicas);
 app.use('/auth',rutasauth);
 app.use('/admin',rutasprivadas)
 
-app.listen(Port ,()=>{
-    console.log('Servidor iniciado',Port);
+app.listen(PORT ,()=>{
+    console.log('Servidor iniciado',PORT);
 })

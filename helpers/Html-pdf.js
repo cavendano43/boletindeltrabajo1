@@ -12,9 +12,9 @@ exports.generarPDF = async  (html,name)=>{
                 return res;
             });
         }else {
-            response= await pdf.create(html).toBuffer(async function(err, buffer){
-                return FileUploadS3(buffer,name);
-            });
+            /*response= await pdf.create(html).toBuffer(async function(err, buffer){
+                //return FileUploadS3(buffer,name);
+            });*/
         }
     } catch(e) {
         return e;
