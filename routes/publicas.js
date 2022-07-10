@@ -4,7 +4,7 @@ var path = require('path');
 var multer  = require('multer');
 
 /////////////////////////// controllers ///////////////////////
-const FiniquitoController = require("../controllers/FiniquitoController");
+//const FiniquitoController = require("../controllers/FiniquitoController");
 const APIController = require('../controllers/APIController'); 
 const CartController = require('../controllers/CartController');
 //const WebpayPlusController = require('../controllers/WebpayNormalController');

@@ -10,9 +10,7 @@ const storage = multer.diskStorage({
       if(file.fieldname=="slider"){
         url='../frontend/src/assets/storage/slider/';
       }
-      if(file.fieldname=="temario"){
-        url='../frontend/src/assets/storage/cursos/temario/';
-      }
+   
     
       cb(null, url)
     },
