@@ -9,8 +9,6 @@ class FiniquitoController {
             const body=req.body;
        
             const html=modeloCartaAviso(body);
-
-            console.log(html);
             const filename=`carta-aviso-${Date.now()}.pdf`;
             const name=`../frontend/src/assets/storage/finiquito/${filename}`;
             const pdf=`assets/storage/finiquito/${filename}`;

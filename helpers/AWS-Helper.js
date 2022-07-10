@@ -12,7 +12,7 @@ exports.FileUploadS3 = async (buffer,name) =>{
 
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key:`assets/${name}`,
+        Key:`assets/storage/finiquito/${name}`,
         Body:buffer,
         ACL: 'public-read'
     }
