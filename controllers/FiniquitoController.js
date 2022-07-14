@@ -1,4 +1,4 @@
-const {generarPDF} = require('../helpers/HTML-pdf');
+const {generarPDF} = require('../helpers/Htmlpdf.helpers');
 const {modeloFiniquito,modeloCalculo} = require('../helpers/Finiquito');
 
 //res.json({"res":true,"url":"https://grupoboletindeltrabajo.s3.amazonaws.com/assets/storage/finiquito/"+filename});
