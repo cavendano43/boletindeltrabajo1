@@ -40,7 +40,7 @@ router.post("/webpay-normal/finish", WebpayPlusController.finish);
 */
 router.post("/calculo-finiquito",FiniquitoController.calculo);
 router.post("/generar-finiquito",FiniquitoController.finiquito);
-//router.post("/carta-finiquito",FiniquitoController.cartaAviso);
+router.post("/carta-finiquito",FiniquitoController.cartaAviso);
 ////////////////////// grupoboletindeltrabajo //////////////////
 router.get('/noticias/:area/',NoticiasController.noticiasAreas);
 router.get('/ultimas/noticias',NoticiasController.noticiasUltima);
