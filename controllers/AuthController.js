@@ -11,7 +11,7 @@ class AuthController{
     
     static signIn = async(req,res)=>{
         const { email, password } = req.body;
-       
+    
         try{
       
           const user = await Usuario.findOne({email})

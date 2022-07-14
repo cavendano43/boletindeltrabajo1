@@ -161,7 +161,8 @@ class APIController{
             const anio = req.params.anio;
             const fecha = new RegExp(`.*${anio}.*`);
             const calendario=await Calendario.find({"fecha":fecha});
-            res.status(200).json({code:200,status:true,payload:calendario});
+            const orden = calendario.sort((a,b)=>{ return parseInt(a.fecha.split('/')[0]) - parseInt(b.fecha.split('/')[0]) });
+            res.status(200).json({code:200,status:true,payload:orden});
         }catch(e){
             return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
         }

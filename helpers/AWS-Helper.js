@@ -8,7 +8,6 @@ const s3= new AWS.S3({
 })
 
 exports.FileUploadS3 = async (buffer,name) =>{
-    const fileType=name;
 
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,

@@ -11,8 +11,66 @@ const Noticias=require('../models/Noticias');
 const Usuario=require('../models/Usuario');
 const Newsletter=require('../models/Newsletter');
 const FeriadoLegal = require('../models/FeriadoLegal');
+const Calendario = require('../models/Calendario');
 class AdminController{
+    static getCalendar = async(req,res)=>{
+        try{
+            const response = await Calendario.find();
+            return res.status(200).send({code:200,status:true,payload:response});
+        } catch(e) {
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+        }
+    }
 
+    static postCalendar = async(req,res)=>{
+        try {
+            let body=req.body;
+      
+            let img = "";
+            if(req.file){
+                const filename=req.file.filename;
+                img=`assets/storage/calendario/${filename}`
+            }
+            body.previewImageSrc = img;
+            body.thumbnailImageSrc = img;
+
+            const model = new Calendario(body);
+         
+            const response = await model.save();
+            return res.status(200).json({code:200,status:true,payload:response})
+        } catch(e){
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+        }
+    }
+
+    static putCalendar = async(req,res)=>{
+        try {
+            const {id,alt,title,fecha,imgs} = req.body;
+            let img = "";
+            if(req.file){
+                const filename=req.file.filename;
+                img=`assets/storage/calendario/${filename}`;
+            }else{
+                img=imgs;
+            }
+            const previewImageSrc = img;
+            const thumbnailImageSrc = img;
+            const response = await Calendario.findByIdAndUpdate(id,{alt,title,fecha,previewImageSrc,thumbnailImageSrc});
+            return res.status(200).json({code:200,status:true,payload:response})
+        } catch(e){
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+        }
+    }
+
+    static deleteCalendar = async(req,res)=>{
+        try{
+            const {id} = req.params;
+            const calendario=await Calendario.findByIdAndDelete(id);
+            return res.status(200).json({code:200,status:true,payload:calendario});
+        }catch(e){
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+        }
+    }
     static getFeriadoLegal = async(req,res)=>{
         try{
             const response = await FeriadoLegal.find();
@@ -231,6 +289,7 @@ class AdminController{
         try {
             const {tipo,valor,fecha,fechamonth,regimengeneral,mayormenor,finesnoremuneracionales,casaparticular}=req.body;
             const fc=fecha!='' ? fecha.split("-") : (fechamonth+"-01").split("-");
+            console.log(fechamonth);
             const dia=fc[2],
             mes=fc[1],
             anio=fc[0];
@@ -252,7 +311,7 @@ class AdminController{
                 fecha:anio+"-"+mes+"-"+dia,
             }
             let indicadoresModel = new Indicadores(indicadores);
-   
+            
             await indicadoresModel.save();
             return res.status(200).json({code:200,status:true,message:"Registro exítoso"});
         } catch(e) {

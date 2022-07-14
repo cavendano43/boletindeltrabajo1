@@ -1,22 +1,40 @@
-var pdf = require('html-pdf');
-const {FileUploadS3} = require('./AWS-Helper.js');
-
-exports.generarPDF = async  (html,name)=>{
+const pdf = require('html-pdf');
+//const {FileUploadS3} = require('./AWS-Helper.js');
+const axios = require("axios");
+exports.generarPDF = async(html,name)=>{
     try{
         const file=`../frontend/src/assets/storage/finiquito/${name}`;
+    
         let response;
         if(process.env.AMBIENT === 'QA'){
-            response = pdf.create(html).toFile(file, function(err, res) {
-                if (err) return console.log(err);
-                console.log(res); // { filename: '/app/businesscard.pdf' }
-                return res;
+            response = pdf.create(html).toFile(file, function(err, resp) {
+                try{
+                    if (err) return console.log(err);
+                    return resp;
+                }catch(e){
+                    return e;
+                }
             });
-        }else {
-            response= await pdf.create(html).toBuffer(async function(err, buffer){
-                console.log(buffer);
-                return FileUploadS3(buffer,name);
+  
+        } else {
+            response = await pdf.create(html).toBuffer(async function(err, buffer){
+                try{
+                    const string64 = buffer.toString('base64');
+                    const resp =  await axios.post('https://portaldesoluciones.cl/models/process/finiquitogrupo.php', {
+                        buffer:string64,
+                        name:name,
+                    });
+                    return resp.data;
+                } catch(e) {
+                    return e;
+                }
+                //return FileUploadS3(buffer,name);
             });
+            console.log(response);
+
         }
+        
+        
     } catch(e) {
         return e;
     } 

@@ -97,7 +97,7 @@ h1 {
 }
 
 `;
-exports.modeloCartaAviso = (datos)=>{
+/*exports.modeloCartaAviso = (datos)=>{
 
     const fechaactual=moment().format('LL');
     const salud=datos.datospersonales.salud=='ISAPRES' ? `${datos.datospersonales.salud} ${datos.datospersonales.isapres}`:datos.datospersonales.salud;
@@ -201,10 +201,10 @@ exports.modeloCartaAviso = (datos)=>{
           </div>
       </body>
 </html>`;
-}
+}*/
 
 exports.modeloFiniquito = (datos)=>{
-  console.log(datos);
+
   const fechaactual=moment().format('LL');
   const fechainicio=moment(datos.datosfechas.fechainicio).format('LL');
   const fechatermino=moment(datos.datosfechas.fechatermino).format('LL');

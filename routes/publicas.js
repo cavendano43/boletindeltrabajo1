@@ -4,10 +4,10 @@ var path = require('path');
 var multer  = require('multer');
 
 /////////////////////////// controllers ///////////////////////
-//const FiniquitoController = require("../controllers/FiniquitoController");
+const FiniquitoController = require("../controllers/FiniquitoController");
+//const WebpayPlusController = require('../controllers/WebpayNormalController');
 const APIController = require('../controllers/APIController'); 
 const CartController = require('../controllers/CartController');
-//const WebpayPlusController = require('../controllers/WebpayNormalController');
 const CapacitacionController = require('../controllers/CapacitacionController');
 const DocumentosController = require("../controllers/DocumentosController");
 const NoticiasController = require('../controllers/NoticiasController');
@@ -37,10 +37,10 @@ router.get("/",(req,res)=>{
 router.post("/webpay-normal/init", WebpayPlusController.init);
 router.post("/webpay-normal/response", WebpayPlusController.response);
 router.post("/webpay-normal/finish", WebpayPlusController.finish);
-
+*/
 router.post("/calculo-finiquito",FiniquitoController.calculo);
 router.post("/generar-finiquito",FiniquitoController.finiquito);
-router.post("/carta-finiquito",FiniquitoController.cartaAviso);*/
+//router.post("/carta-finiquito",FiniquitoController.cartaAviso);
 ////////////////////// grupoboletindeltrabajo //////////////////
 router.get('/noticias/:area/',NoticiasController.noticiasAreas);
 router.get('/ultimas/noticias',NoticiasController.noticiasUltima);

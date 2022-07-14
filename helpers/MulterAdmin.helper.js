@@ -9,6 +9,9 @@ const storage = multer.diskStorage({
       if(file.fieldname=="slider"){
         url='../frontend/src/assets/storage/slider/';
       }
+      if(file.fieldname=="calendario"){
+        url='../frontend/src/assets/storage/calendario/';
+      }
       if(file.fieldname=="temario"){
         url='../frontend/src/assets/storage/cursos/temario/';
       }

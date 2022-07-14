@@ -4,6 +4,10 @@ const router = express.Router();
 const upload = require('../helpers/MulterAdmin.helper');
 ////////// controllers /////////
 const AdminController = require ('../controllers/AdminController');
+router.get('/calendario',AdminController.getCalendar);
+router.post('/calendario/registrar',upload.single('calendario'),AdminController.postCalendar);
+router.put('/calendario/editar',upload.single('calendario'),AdminController.putCalendar);
+router.delete('/calendario/eliminar/:id',AdminController.deleteCalendar);
 router.get('/ferido-legal',AdminController.getFeriadoLegal);
 router.get('/newsletter',AdminController.getNewsletter);
 router.delete('/newsletter/eliminar-all',AdminController.deleteNewsletterAll);
