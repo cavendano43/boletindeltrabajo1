@@ -12,7 +12,29 @@ const Usuario=require('../models/Usuario');
 const Newsletter=require('../models/Newsletter');
 const FeriadoLegal = require('../models/FeriadoLegal');
 const Calendario = require('../models/Calendario');
+const Slider = require('../models/Slider');
+const Popups = require('../models/PopUps');
 class AdminController{
+
+    static getSlider = async(req,res)=>{
+        try{
+            const response = await Slider.find();
+            return res.status(200).send({code:200,status:true,payload:response});
+        } catch(e) {
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+        }
+    }
+
+
+    static getPopups = async(req,res)=>{
+        try{
+            const response = await Popups.find();
+            return res.status(200).send({code:200,status:true,payload:response});
+        } catch(e) {
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+        }
+    }
+
     static getCalendar = async(req,res)=>{
         try{
             const response = await Calendario.find();

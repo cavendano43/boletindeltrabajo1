@@ -4,7 +4,9 @@ const router = express.Router();
 const upload = require('../helpers/MulterAdmin.helper');
 ////////// controllers /////////
 const AdminController = require ('../controllers/AdminController');
+router.get('/slider',AdminController.getSlider);
 router.get('/calendario',AdminController.getCalendar);
+router.get('/popups',AdminController.getPopups);
 router.post('/calendario/registrar',upload.single('calendario'),AdminController.postCalendar);
 router.put('/calendario/editar',upload.single('calendario'),AdminController.putCalendar);
 router.delete('/calendario/eliminar/:id',AdminController.deleteCalendar);
