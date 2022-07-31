@@ -5,7 +5,6 @@ const cors = require('cors');
 //// inicializacion///
 const app= express();
 require('dotenv').config({path:'variables.env'});
-
 const connectDB = require ('./config/database');
 connectDB();
 ///routes /////
@@ -17,7 +16,7 @@ app.use(express.json({extended:true}))
 app.use(cors());
 app.use(rutaspublicas);
 app.use('/auth',rutasauth);
-app.use('/admin',rutasprivadas)
+app.use('/admin',rutasprivadas);
 
 app.listen(Port ,()=>{
     console.log('Servidor iniciado',Port);

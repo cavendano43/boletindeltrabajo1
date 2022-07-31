@@ -2,101 +2,226 @@ const moment = require('moment');
 moment.locale('es');
 
 const css=`
-.container{
+  .container{
   padding:3rem;
   font-size:13pt;
   font-family:'Times New Roman';
-}
-.max-width-150{
+  }
+  .max-width-150{
   max-width:150px;
-}
-.img-fluid{
+  }
+  .img-fluid{
   max-width: 100%;
   height: auto;
-}
-h1 {
-    color: green;
-}
-.pt-3{
+  }
+  h1 {
+      color: green;
+  }
+  .p-2{
+      padding: 0.5rem!important;
+  }
+  .p-3 {
+      padding: 1rem!important;
+  }
+  .pt-3{
   padding-top:1rem !important;
-}
-.pl-3, .px-3 {
+  }
+  .pl-3, .px-3 {
   padding-left: 1rem !important;
-}
-.pr-3, px-3{
+  }
+  .pr-3, px-3{
   padding-right: 1rem !important;
-}
-.m-0{
+  }
+  .m-0{
   margin:0;
-}
-.mt-0{
+  }
+  .mt-0{
   margin-top:0;
-}
-.mb-0{
+  }
+  .mb-0{
   margin-bottom:0;
-}
-.mb-3{
+  }
+  .mb-3{
   margin-bottom:.5rem;
-}
-.text-lowercase {
+  }
+  .mb-4 {
+  margin-bottom:.75rem;
+  }
+  .mb-5 {
+  margin-bottom:1rem;
+  }
+  .font-size-13pt {
+    font-size: 13pt;
+  }
+  .font-size-12 {
+    font-size: 12px;
+  }
+  .font-size-18 {
+    font-size: 18px;
+  }
+  .font-size-20 {
+    font-size: 20px;
+  }
+  .text-lowercase {
   text-transform: lowercase !important;
-}
-.text-uppercase {
+  }
+  .text-uppercase {
   text-transform: uppercase !important;
-}
-.text-capitalize {
+  }
+  .text-capitalize {
   text-transform: capitalize !important;
-}
-.text-justify{
+  }
+  .text-justify{
   text-align:justify !important;
-}
-.text-center{
+  }
+  .text-center{
   text-align:center !important;
-}
-.text-left {
+  }
+  .text-left {
   text-align: left !important;
-}
-.text-right {
+  }
+  .text-right {
   text-align: right !important;
-}
-.row{
+  }
+  .row{
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-}
-.py-5{
+  }
+  .py-5{
   padding-top:3rem;
   padding-bottom:3rem;
-}
-.col{
+  }
+  .col{
   -ms-flex-preferred-size: 0;
   flex-basis: 0;
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
   flex-grow: 1;
   max-width: 100%;
-}
-.w-347p{
+  }
+  .w-347p{
   width:347px;
-}
-.w-189p{
+  }
+  .w-189p{
   width:189px;
-}
-.d-flex{
+  }
+  .d-flex{
   display: -ms-flexbox!important;
   display: flex!important;
-}
-.justify-content-end {
-    -ms-flex-pack: end!important;
-    justify-content: flex-end!important;
-}
-.w-100{
+  }
+  .justify-content-end {
+      -ms-flex-pack: end!important;
+      justify-content: flex-end!important;
+  }
+  .w-100{
   width:100% !important;
-}
-
+  }
+  .border-1 {
+  border: 1px solid #222;
+  }
+  .img-fluid {
+      max-width: 100%;
+      height: auto;
+  }
+  .max-w-150 {
+      max-width: 250px;
+  }
+  .text-indent-50 {
+      text-indent: 50px;
+  }
 `;
+
+exports.modeloCartaAviso2 = (datos) => {
+  const fechaactual=moment().format('LL');
+  const fechatermino=moment(datos.datosfechas.fechatermino).format('LL');
+  const fechapago=moment(datos.datosfechas.fechapago).format('LL');
+  const logo = datos.datospersonales.logo !='' ? `<div class="d-flex"><img class="img-fluid max-w-150" src="${datos.datospersonales.logo}"/></div>` : '';
+  const causal = datos.datospersonales.causal;
+  const indemnizacion = datos.datosresumen.indemnizacionanioserviciototal !== '0' ? `<p class="text-justify text-indent-50">En cumplimiento de lo dispuesto en el inciso cuarto del artículo 162 del Código del Trabajo es que se viene a señalar que por concepto las indemnizaciones correspondientes se pagaran lo siguientes valores:</p><p class="text-justify">Indemnización por años de servicio $${datos.datosresumen.indemnizacionanioserviciototal}</p>` : '';
+  let articulo;
+  let inciso =  datos.datospersonales.inciso;
+  let titulo = "";
+  let fundamento = '';
+  if (causal==="Artículo 161 Necesidades de La Empresa" || causal==="Artículo 161 Desahucio"){
+    articulo=causal.split(" ",2).join(" ").toLowerCase();
+    titulo = 'inciso primero, del Código del Trabajo, esto es, necesidades de la empresa, establecimiento o servicio, derivados de la racionalización o modernización de los mismos, bajas en la productividad, cambios en las condiciones del mercado o de la economía, que hagan necesaria la separación de uno o más trabajadores.';
+    fundamento = '';
+  }else{
+    articulo=causal.split(" ",4).join(" ").toLowerCase();
+    titulo=` del Código del Trabajo, esto es, ${causal.slice(18).toLowerCase()}`;
+   
+    fundamento = `<p class="text-justify text-indent-50">Los hechos en que se funda la causal invocada consisten en la ${datos.datospersonales.fundamentodedespido},  lo cual nos obliga a su separación.</p>`;
+    if(causal==="Artículo 160 N° 1 Conductas Indebidas de Caracter Grave"){
+      titulo+=`, debidamente comprobadas, ${datos.datospersonales.inciso}`;
+    }
+    if(causal==="Artículo 160 N° 2 Negociaciones del trabajador dentro del giro del negocio"){
+      titulo+=`Negociaciones que ejecute el trabajador dentro del giro del negocio y que hubieren sido prohibidas por escrito en el respectivo contrato por el empleador`;
+    }
+    if(causal==="Artículo 160 N° 3 No concurrencia a labores sin causa justificada"){
+      titulo+=`No concurrencia del trabajador a sus labores sin causa justificada durante dos días seguidos,dos lunes en el mes o un total de tres días durante igual período de tiempo; asimismo, la falta injustificada, o sin aviso previo de parte del trabajador que tuviere a su cargo una actividad, faena o máquina cuyo abandono o paralizacíon signifique una perturbacíon grave en la marcha de la obra`;
+    }
+    if(causal==="Artículo 160 N° 4 Abandono del trabajo por parte del trabajador"){
+      titulo+=`, entendiéndose por tal, ${datos.datospersonales.inciso}`;
+    }
+    if(causal==="Artículo 160 N° 5 Actos que afectan a la seguridad"){
+      titulo+=`Actos, omisiones o imprudencias temerarias, que afecten a la seguridad o al funcionamiento del establecimiento, a la seguridad o a la actividad de los trabajadores`;
+    }
+    if(causal==="Artículo 160 N° 6 Perjuicio material causado intencionalmente"){
+      titulo+=`Negociaciones que ejecute el trabajador dentro del giro del negocio y que hubieren sido prohibidas por escrito en el respectivo contrato por el empleador`;
+    }
+    titulo+=".";
+  }
+  return `
+  <html lang="en" dir="ltr">
+    <head>
+      <meta charset="utf-8">
+      <title>Carta de Aviso</title>
+      <style>
+          ${css}
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        ${logo}
+        <h3 class="text-center"><strong>AVISO DE TÉRMINO DE CONTRATO DE TRABAJO</strong></h3>
+        <p>SEÑOR:</p>
+        <p>${datos.datospersonales.nombretrabajador}</p>
+        <p><u>PRESENTE</u></p>
+        <div class="d-flex justify-content-end">
+          <p>En ${datos.datospersonales.direccion} a ${fechaactual}</p>
+        </div>
+        <div class="font-size-20">
+            <p>Estimado señor:</p>
+            <p class="text-justify text-indent-50">Nos permitimos comunicar que, con 30 días de anticipación que a su contrato de trabajo  se le pondrá termino con fecha ${fechatermino}, por la causal del ${articulo}, ${titulo}</p>
+            ${fundamento}
+            ${indemnizacion}
+            <p class="text-justify text-indent-50">Le informo que sus cotizaciones previsionales se encuentran al día, situación que se acredita mediante los certificados / copia de planillas de cotizaciones previsionales correspondientes a su periodo laborado.</p>
+            <p class="text-justify text-indent-50">De conformidad a lo establecido por la Dirección del Trabajo en ordinarios N°s 4185/063 de 27.10.2014 y 3866/042 de 07.10.2013, le informo a usted que el finiquito de trabajo y los valores a pago estarán disponibles a partir del día ${fechapago} en las dependencias de la empresa, pudiendo usted acercarse a ellas en dicha fecha para concurrir ante ministro de fe para proceder a la suscripción y ratificación del finiquito y el pago de los valores respectivos.</p>
+            <p class="text-justify text-indent-50">Le informo a usted que de acuerdo a lo dispuesto en el artículo 162 del Código del Trabajo, al momento de suscribir el finiquito, si lo estima necesario usted podrá formular la reserva de derechos que estime necesaria.</p>
+            <p class="text-justify">Saluda a usted,</p>
+        </div>
+        <div class="mb-3">
+            <p class="text-center">
+            <b>${datos.datospersonales.nombrerepresentante}</b>
+            </p>
+            <p class="text-center">
+            <b>${datos.datospersonales.rutrepresentante}</b>
+            </p>
+        </div>
+        
+        <div class="border-1 p-3">
+            <p class="text-justify"><strong>Nota:</strong> Las formalidades de esta comunicación de término son:</p>
+            <p class="text-justify">1.- El Trabajador debe ser notificado personalmente con a lo menos 30 días de anticipación, si no se da el aviso con esa anticipación debe  pagarse la indemnización sustitutiva del aviso previo.</p>
+            <p class="text-justify">2.- Se debe notificar a la Inspección del Trabajo dentro del mismo plazo del punto anterior, las comunicaciones a la Inspección deben hacer vía el portal Web de la Dirección del Trabajo.</p>
+        </div>
+      </div>
+    </body>
+  </html>
+  `;
+}
 exports.modeloCartaAviso = (datos)=>{
 
     const fechaactual=moment().format('LL');
@@ -128,22 +253,22 @@ exports.modeloCartaAviso = (datos)=>{
       articulo=causal.split(" ",4).join(" ");
       titulocausal=causal.slice(18);
 
-      if(causal="Artículo 160 N° 1 Conductas Indebidas de Caracter Grave"){
+      if(causal==="Artículo 160 N° 1 Conductas Indebidas de Caracter Grave"){
         titulocausal+=`, debidamente comprobadas, ${datos.datospersonales.inciso}`;
       }
-      if(causal="Artículo 160 N° 2 Negociaciones del trabajador dentro del giro del negocio"){
+      if(causal==="Artículo 160 N° 2 Negociaciones del trabajador dentro del giro del negocio"){
         titulocausal+=`Negociaciones que ejecute el trabajador dentro del giro del negocio y que hubieren sido prohibidas por escrito en el respectivo contrato por el empleador`;
       }
-      if(causal="Artículo 160 N° 3 No concurrencia a labores sin causa justificada"){
+      if(causal==="Artículo 160 N° 3 No concurrencia a labores sin causa justificada"){
         titulocausal+=`No concurrencia del trabajador a sus labores sin causa justificada durante dos días seguidos,dos lunes en el mes o un total de tres días durante igual período de tiempo; asimismo, la falta injustificada, o sin aviso previo de parte del trabajador que tuviere a su cargo una actividad, faena o máquina cuyo abandono o paralizacíon signifique una perturbacíon grave en la marcha de la obra`;
       }
-      if(causal="Artículo 160 N° 4 Abandono del trabajo por parte del trabajador"){
+      if(causal==="Artículo 160 N° 4 Abandono del trabajo por parte del trabajador"){
         titulocausal+=`, entendiéndose por tal, ${datos.datospersonales.inciso}`;
       }
-      if(causal="Artículo 160 N° 5 Actos que afectan a la seguridad"){
+      if(causal==="Artículo 160 N° 5 Actos que afectan a la seguridad"){
         titulocausal+=`Actos, omisiones o imprudencias temerarias, que afecten a la seguridad o al funcionamiento del establecimiento, a la seguridad o a la actividad de los trabajadores`;
       }
-      if(causal="Artículo 160 N° 6 Perjuicio material causado intencionalmente"){
+      if(causal==="Artículo 160 N° 6 Perjuicio material causado intencionalmente"){
         titulocausal+=`Negociaciones que ejecute el trabajador dentro del giro del negocio y que hubieren sido prohibidas por escrito en el respectivo contrato por el empleador`;
       }
       indemnizacionparrafo="";
@@ -1020,9 +1145,9 @@ function unidad(numero){
   }
   }
   return numu;
-  }
+}
 
-  function decena(numdero){
+function decena(numdero){
 
   if (numdero >= 90 && numdero <= 99)
   {

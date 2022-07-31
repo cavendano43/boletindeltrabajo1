@@ -30,10 +30,7 @@ exports.generarPDF = async(html,name)=>{
                 }
                 //return FileUploadS3(buffer,name);
             });
-            console.log(response);
-
         }
-        
         
     } catch(e) {
         return e;

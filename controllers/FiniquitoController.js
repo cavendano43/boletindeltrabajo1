@@ -1,5 +1,5 @@
 const {generarPDF} = require('../helpers/Htmlpdf.helpers');
-const {modeloCartaAviso,modeloFiniquito,modeloCalculo} = require('../helpers/Finiquito');
+const {modeloCartaAviso,modeloCartaAviso2,modeloFiniquito,modeloCalculo} = require('../helpers/Finiquito');
 
 //res.json({"res":true,"url":"https://grupoboletindeltrabajo.s3.amazonaws.com/assets/storage/finiquito/"+filename});
 class FiniquitoController {
@@ -7,7 +7,7 @@ class FiniquitoController {
     static async cartaAviso (req,res){
         try{
             const body=req.body;
-            const html=modeloCartaAviso(body);
+            const html=modeloCartaAviso2(body);
             const filename=`carta-aviso-${Date.now()}.pdf`;
             const pdf=`https://portaldesoluciones.cl/assest/storage/finiquito/${filename}`;
             await generarPDF(html,filename);
