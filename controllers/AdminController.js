@@ -150,12 +150,8 @@ class AdminController{
             }else {
                 avatar = imgavatar;
             }
-            console.log(avatar);
             const hashpassword = encrypPassword(password);
             const user = await Usuario.findByIdAndUpdate(id,{nombre,apellido,rut,telefono,razonsocial,descripcion,direccion,rol,numerodecontrato,email,fechainicio,fechavencimiento,password,hashpassword,avatar});
-            //body.status = true;
-            //const model = new Usuario(body);
-            //const user=await model.save();
             return res.status(200).json({code:200,status:true,payload:user});
         }catch(e){
             return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e,errors:e});
