@@ -4,7 +4,7 @@ moment.locale('es');
 const css=`
   .container{
     padding:3rem;
-    font-size:13pt;
+    font-size:12px;
     font-family:'Times New Roman';
   }
   .max-width-150{
@@ -544,6 +544,7 @@ exports.modeloFiniquito2 = (datos)=>{
   const fechainicio=moment(datos.datosfechas.fechainicio).format('LL');
   const fechatermino=moment(datos.datosfechas.fechatermino).format('LL');
   const causal=datos.datospersonales.causal;
+  const logo = datos.datospersonales.logo !='' ? `<div class="d-flex"><img class="img-fluid max-w-150" src="${datos.datospersonales.logo}"/></div>` : '';
   let articulo = "";
   let titulocausal = "";
   let indemnizacion= "";
@@ -616,6 +617,7 @@ exports.modeloFiniquito2 = (datos)=>{
     <body>
   
     <div class="container">
+      ${logo}
       <h2 class="text-center">FINIQUITO DE CONTRATO DE TRABAJO</h2>
       <p class="text-justify">
           En Santiago de Chile, a ${fechaactual}, entre <strong><strong>${datos.datospersonales.nombreempresa}</strong></strong>,  Rol Único Tributario N° ${datos.datospersonales.rutempresa}, representada por don ${datos.datospersonales.nombrerepresentante}, cédula nacional de identidad N° ${datos.datospersonales.rutrepresentante}, ambos domiciliados en ${datos.datospersonales.direccion} comuna de ${datos.datospersonales.comunaempresa}, en adelante también el “ex Empleador”; y Don ${datos.datospersonales.nombretrabajador}, cédula nacional de identidad N° ${datos.datospersonales.ruttrabajador}, en adelante también el "ex Trabajadora", en conjunto como las partes, se acuerda el siguiente finiquito:
