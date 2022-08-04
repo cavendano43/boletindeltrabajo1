@@ -4,7 +4,7 @@ moment.locale('es');
 const css=`
   .container{
     padding:3rem;
-    font-size:12px;
+    font-size:10px;
     font-family:'Times New Roman';
   }
   .max-width-150{
