@@ -3,16 +3,16 @@ moment.locale('es');
 
 const css=`
   .container{
-  padding:3rem;
-  font-size:13pt;
-  font-family:'Times New Roman';
+    padding:3rem;
+    font-size:13pt;
+    font-family:'Times New Roman';
   }
   .max-width-150{
-  max-width:150px;
+    max-width:150px;
   }
   .img-fluid{
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
   }
   h1 {
       color: green;
@@ -62,6 +62,27 @@ const css=`
   .mr-20 {
     margin-right: 23rem !important;
   }
+
+  .ml-3 {
+    margin-left: 1rem !important;
+  }
+  .ml-5 {
+    margin-left: 3rem !important;
+  }
+  .ml-9 {
+    margin-left: 6rem !important;
+  }
+  .ml-10 {
+    margin-left: 7rem !important;
+  }
+  .ml-11 {
+    margin-left: 8.5rem !important;
+  }
+  .mñ-20 {
+    margin-left: 23rem !important;
+  }
+  
+
   .my-5px{
     margin-top: 5px;
     margin-bottom: 5px;
@@ -95,25 +116,25 @@ const css=`
     font-size: 20px;
   }
   .text-lowercase {
-  text-transform: lowercase !important;
+    text-transform: lowercase !important;
   }
   .text-uppercase {
-  text-transform: uppercase !important;
+    text-transform: uppercase !important;
   }
   .text-capitalize {
-  text-transform: capitalize !important;
+    text-transform: capitalize !important;
   }
   .text-justify{
-  text-align:justify !important;
+    text-align:justify !important;
   }
   .text-center{
-  text-align:center !important;
+    text-align:center !important;
   }
   .text-left {
-  text-align: left !important;
+    text-align: left !important;
   }
   .text-right {
-  text-align: right !important;
+    text-align: right !important;
   }
   .row{
     display: -webkit-box;
@@ -140,7 +161,16 @@ const css=`
   .w-189p{
     width:189px;
   }
-  .d-flex{
+  .w-40{
+    width:40%;
+  }
+  .w-50{
+    width:50%;
+  }
+  .w-60{
+    width:60%;
+  }
+  .d-flex {
     display: -ms-flexbox !important;
     display: flex !important;
   }
@@ -156,7 +186,7 @@ const css=`
     width:100% !important;
   }
   .border-1 {
-  border: 1px solid #222;
+    border: 1px solid #222;
   }
   .img-fluid {
       max-width: 100%;
@@ -510,60 +540,48 @@ exports.modeloFiniquito = (datos)=>{
 }
 
 exports.modeloFiniquito2 = (datos)=>{
-
-  /*const fechaactual=moment().format('LL');
+  const fechaactual=moment().format('LL');
   const fechainicio=moment(datos.datosfechas.fechainicio).format('LL');
   const fechatermino=moment(datos.datosfechas.fechatermino).format('LL');
-  const saldoapagar=datos.datosresumen.saldoapagar.split(".").join("");
-  const saldoapagarpalabra=MaysPrimera(milmillon(saldoapagar).toLowerCase());
   const causal=datos.datospersonales.causal;
-
-  let logo=datos.datospersonales.logo !='' ? `<div class="mb-3 max-width-150"><img class="img-fluid" src="${datos.datospersonales.logo}" /></div>` : '';
-  let articulo="";
-  let titulocausal="";
-  let indemnizacion="";
-  let descuentos="";
-  let fundamento="";
-
+  let articulo = "";
+  let titulocausal = "";
+  let indemnizacion= "";
   if(causal=="Artículo 161 Necesidades de La Empresa" || causal=="Artículo 161 Desahucio"){
-    articulo=causal.split(" ",2).join(" ");
-    titulocausal=causal=="Artículo 161 Necesidades de La Empresa" ? `${causal.slice(13)} establecimiento y servicio Los hechos en que se fundamenta dicha causal son: Racionalizacíon por cambio en las condiciones de mercado o modernización de los mismos y la reestructuración interna que hace inevitable su desvinculación`:``;
-    fundamento="";
+    articulo= causal=="Artículo 161 Necesidades de La Empresa" ? `${causal.split(" ",2).join(" ")}, inciso 1°` : `${causal.split(" ",2).join(" ")}, inciso 2°`;
+    titulocausal=causal=="Artículo 161 Necesidades de La Empresa" ? `${causal.slice(13)} establecimiento y servicio`:``;
     indemnizacion=`
-    <tr>
-      <td class="w-347p"><p class="m-0">Indemnizacion Por Años de Servicios <strong>(${datos.datosresumen.indemnizacionanioservicioanios})</strong></p></td>
-      <td class="w-189p"><p class="text-left m-0">$ ${datos.datosresumen.indemnizacionanioserviciototal}.-</p></td>
-    </tr>
-    <tr>
-      <td class="w-347p"><p class="m-0">Indemnizacion Sustitutiva de aviso previo</p></td>
-      <td class="w-189p"><p class="text-left m-0">$ ${datos.datosresumen.indemnizacionsustitutiva}.-</p></td>
-    </tr>`;
-    descuentos=`
-    <tr>
-      <td class="w-347p"><p class="m-0">DESCUENTOS:</p></td>
-      <td class="w-189p"><p class="text-left m-0"></p></td>
-    </tr>
-    <tr>
-      <td class="w-347p"><p class="m-0">Otros Descuentos</p></td>
-      <td class="w-189p"><p class="text-left m-0">-($ ${datos.datosresumen.descuentosotros}.-)</p></td>
-    </tr>
-    <tr>
-      <td class="w-347p"><p class="m-0">(-) Aporte Empleador Seguro Cesantía</p></td>
-      <td class="w-189p"><p class="text-left m-0">-($ ${datos.datosresumen.descuentoaporteafc}.-)</p></td>
-    </tr>
-    <tr>
-      <td colspan="2">
-         <hr class="m-0">
-      </td>
-    </tr>
-    <tr>
-      <td class="w-347p"><p class="m-0">Sub total descuentos</td>
-      <td class="w-189p"><p class="text-left m-0">-($ ${datos.datosresumen.descuentototal}.-)</p></td>
-    </tr>`;
-  }else{
+      <div class="row">
+        <div class="w-60">
+          <p class="mr-3 my-5px">INDEMNIZACIÓN SUSTITUTIVA DEL AVISO PREVIO</p>
+        </div>
+        <div class="w-40">
+          <p class="my-5px">$${datos.datosresumen.indemnizacionsustitutiva}.-</p>
+        </div>
+      </div>
+      <div class="row">
+          <div class="w-60 row">
+            <p class="mr-3 my-5px">INDEMNIZACIÓN POR AÑOS DE SERVICIOS</p>
+            <p class="my-5px">${datos.datosresumen.indemnizacionanioservicioanios}</p>
+          </div>
+          <div class="w-40">
+            <p class="my-5px">$${datos.datosresumen.indemnizacionanioserviciototal}.-</p>
+          </div>
+      </div>
+      <div class="row">
+          <div class="w-60">
+            <p class="my-5px">DESCUENTO APORTE SALDO EMPLEADOR AL SEG. CESANTIA</p>
+          </div>
+          <div class="w-40">
+            <p class="my-5px">-($${datos.datosresumen.descuentoaporteafc}.-)</p>
+          </div>
+      </div>
+    `;
+  }else {
     articulo=causal.split(" ",4).join(" ");
     titulocausal=causal.slice(18);
-  
+    indemnizacion=``;
+
     if(causal=="Artículo 160 N° 1 Conductas Indebidas de Caracter Grave"){
       titulocausal+=`, debidamente comprobadas, ${datos.datospersonales.inciso}`;
     }
@@ -583,18 +601,16 @@ exports.modeloFiniquito2 = (datos)=>{
       titulocausal+=`Negociaciones que ejecute el trabajador dentro del giro del negocio y que hubieren sido prohibidas por escrito en el respectivo contrato por el empleador`;
     }
 
-    indemnizacion="";
-    descuentos="";
-    fundamento="";
-  }*/
+  }
+
+  
   return `<!DOCTYPE html>
   <html lang="en" dir="ltr">
     <head>
       <meta charset="utf-8">
       <title>Modelo de finiquito</title>
-          <style>
-            ${css}
-          </style>
+      <style>
+        ${css}
       </style>
     </head>
     <body>
@@ -602,84 +618,76 @@ exports.modeloFiniquito2 = (datos)=>{
     <div class="container">
       <h2 class="text-center">FINIQUITO DE CONTRATO DE TRABAJO</h2>
       <p class="text-justify">
-          En Santiago de Chile, a 08 de junio de 2022, entre <strong><strong>Chile Capacita Spa</strong></strong>,  Rol Único Tributario N° 76.557.775-6, representada por don Luis Montero Mosquera, cédula nacional de identidad N° 6.437.335-8, ambos domiciliados en Calle Arturo Prat 1268, local 001, comuna de Santiago, en adelante también el “ex Empleador”; y Don XXXXXXXXXXXXXXXXX, cédula nacional de identidad N° 222222222-7, en adelante también el "ex Trabajadora", en conjunto como las partes, se acuerda el siguiente finiquito:
+          En Santiago de Chile, a ${fechaactual}, entre <strong><strong>${datos.datospersonales.nombreempresa}</strong></strong>,  Rol Único Tributario N° ${datos.datospersonales.rutempresa}, representada por don ${datos.datospersonales.nombrerepresentante}, cédula nacional de identidad N° ${datos.datospersonales.rutrepresentante}, ambos domiciliados en ${datos.datospersonales.direccion} comuna de ${datos.datospersonales.comunaempresa}, en adelante también el “ex Empleador”; y Don ${datos.datospersonales.nombretrabajador}, cédula nacional de identidad N° ${datos.datospersonales.ruttrabajador}, en adelante también el "ex Trabajadora", en conjunto como las partes, se acuerda el siguiente finiquito:
       </p>
       <p class="text-justify">
-          <strong>PRIMERO</strong>: Don XXXXXXXXXXXXXXXXX, declara que prestó servicios como Profesional e-learning para <strong>Chile Capacita Spa</strong>. desde el 09 de marzo  del 2020 hasta el 31 de mayo del 2022, fecha en que se puso término al respectivo contrato de trabajo de acuerdo con el artículo 161, inciso 1°, del Código del Trabajo, esto es, por <strong>“Necesidades de la empresa establecimiento y servicio”</strong>.
+          <strong>PRIMERO</strong>: Don ${datos.datospersonales.nombretrabajador}, declara que prestó servicios como ${datos.datospersonales.cargo} para <strong>${datos.datospersonales.nombreempresa}</strong>. desde el ${fechainicio} hasta el ${fechatermino}, fecha en que se puso término al respectivo contrato de trabajo de acuerdo con el ${articulo}, del Código del Trabajo, esto es, por <strong>“${titulocausal}”</strong>.
       </p>
       <p class="text-justify">
-          <strong>SEGUNDO:</strong> El ex Trabajador reconoce y acepta que en este acto que <strong>Chile Capacita Spa</strong>, le ha pagado contra la ratificación y firma del presente finiquito la suma total $3.317.508.-, valor que se pagan en este acto y que recibe a su entera satisfacción, correspondiendo a los siguientes conceptos:
+          <strong>SEGUNDO:</strong> El ex Trabajador reconoce y acepta que en este acto que <strong>${datos.datospersonales.nombreempresa}</strong>, le ha pagado contra la ratificación y firma del presente finiquito la suma total $${datos.datosresumen.saldoapagar}.-, valor que se pagan en este acto y que recibe a su entera satisfacción, correspondiendo a los siguientes conceptos:
       </p>
       <div class="d-block">
-          <div class="d-flex">
-              <p class="mr-3 my-5px">FERIADO LEGAL / PROPORCIONAL</p>
-              <p class="mr-11 my-5px">50,417 días</p>
-              <p class="my-5px">$1.008.333.-</p>
+          <div class="row">
+              <div class="w-60 row">
+                <p class="mr-3 my-5px">FERIADO LEGAL / PROPORCIONAL</p>
+                <p class="my-5px">${datos.datosfechas.feriadoproporcional} días</p>
+              </div>
+              <div class="w-40">
+                <p class="ml-3 my-5px">$${datos.datosresumen.feriadoproporcional}.-</p>
+              </div>
           </div>
-          <div class="d-flex">
-              <p class="mr-3 my-5px">INDEMNIZACIÓN SUSTITUTIVA DEL AVISO PREVIO</p>
-              <p class="mr-9 my-5px"></p>
-              <p class="my-5px"> $798.542.-</p>
-          </div>
-          <div class="d-flex">
-              <p class="mr-3 my-5px">INDEMNIZACIÓN POR AÑOS DE SERVICIOS</p>
-              <p class="mr-9 my-5px">2 años</p>
-              <p class="my-5px"> $1.597.084.-</p>
-          </div>
-          <div class="d-flex">
-              <p class="my-5px">DESCUENTO APORTE SALDO EMPLEADOR AL SEG. CESANTIA</p>
-              <p class="mr-3 my-5px"></p>
-              <p class="my-5px">-($86.451.-)</p>
-          </div>
-
-          <div class="d-flex">
-              <p class="mr-3 my-5px"><strong>TOTAL A PAGAR</strong></p>
-              <p class="mr-20 my-5px"></p>
-              <p class="my-5px"><strong>$3.317.508.-</strong></p>
+          ${indemnizacion}
+          <div class="row">
+              <div class="w-60">
+                <p class="mr-3 my-5px"><strong>TOTAL A PAGAR</strong></p>
+              </div>
+              <div class="w-40">
+                <p class="my-5px"><strong>$${datos.datosresumen.saldoapagar}.-</strong></p>
+              </div>
           </div>
       </div>
 
       <p class="text-justify">
-          Don XXXXXXXXXXXXXX, declara haber analizado y estudiado detenidamente dicho detalle, aceptándolo en todas sus partes, sin tener observación alguna que formular. En consecuencia, el ex empleador paga a Don XXXXXXXXXXXXXXXX,  mediante transferencia bancaria la suma de $3.317.508.-, quien declara recibir en este acto a su entera satisfacción el monto el monto pagado y acepta los descuentos realizados, no teniendo reclamo alguno que hacer al respecto.
+          Don ${datos.datospersonales.nombretrabajador}, declara haber analizado y estudiado detenidamente dicho detalle, aceptándolo en todas sus partes, sin tener observación alguna que formular. En consecuencia, el ex empleador paga a Don ${datos.datospersonales.nombretrabajador},  mediante transferencia bancaria la suma de $${datos.datosresumen.saldoapagar}.-, quien declara recibir en este acto a su entera satisfacción el monto el monto pagado y acepta los descuentos realizados, no teniendo reclamo alguno que hacer al respecto.
       </p>
 
       <p class="text-justify">
-          <strong>TERCERO:</strong> Don XXXXXXXXXXXXXXX,  expresa en este acto que está totalmente de acuerdo con la causal de término de la relación laboral no teniendo reclamo alguno que hacer respecto de ella y sus fundamentos, dejando además expresa constancia que durante todo el tiempo que prestó servicios a <strong>Chile Capacita Spa</strong> recibió de ésta, correcta y oportunamente, el pago del total de las remuneraciones convenidas, de acuerdo con su contrato de trabajo, clase de trabajo ejecutado, reajustes legales, pago de asignaciones familiares, horas extraordinarias, feriados legales, gratificaciones legales, contractuales o voluntarias, bonos, participaciones, indemnizaciones legales por terminación del contrato de trabajo, indemnizaciones legales por accidentes del trabajo y/o enfermedades profesionales, indemnización legal por vulneración de derechos fundamentales durante la relación laboral y/o con ocasión del despido y/o a causa de la terminación del contrato de trabajo por cualquiera otro motivo, ya sea que dichas prestaciones e indemnizaciones sean de origen legal o contractual o se hayan generado producto de la aplicación práctica del contrato de trabajo o como cláusula tácita del mismo, como también se deja expresa constancia de que el ex Empleador enteró oportunamente todas y cada una de las cotizaciones previsionales y de salud que corresponden en conformidad a la ley y que se le entregó los comprobantes de dichos pagos, razones por las cuales declara que <strong>Chile Capacita Spa</strong> nada le adeuda por los conceptos antes indicados ni por ningún otro, sean de origen legal, contractual o extracontractual, derivado de la prestación de sus servicios y/o de la terminación del contrato de trabajo, por lo cual, no teniendo reclamo ni cargo alguno que formular, Don XXXXXXXXXXXXXX,  le otorga a el más amplio, total y completo finiquito respecto de todas y cada de las obligaciones, prestaciones e indemnizaciones antes indicadas, declaración que formula libre y espontáneamente, en perfecto y cabal conocimiento de todos y cada uno de sus derechos.
+          <strong>TERCERO:</strong> Don ${datos.datospersonales.nombretrabajador},  expresa en este acto que está totalmente de acuerdo con la causal de término de la relación laboral no teniendo reclamo alguno que hacer respecto de ella y sus fundamentos, dejando además expresa constancia que durante todo el tiempo que prestó servicios a <strong>${datos.datospersonales.nombreempresa}</strong> recibió de ésta, correcta y oportunamente, el pago del total de las remuneraciones convenidas, de acuerdo con su contrato de trabajo, clase de trabajo ejecutado, reajustes legales, pago de asignaciones familiares, horas extraordinarias, feriados legales, gratificaciones legales, contractuales o voluntarias, bonos, participaciones, indemnizaciones legales por terminación del contrato de trabajo, indemnizaciones legales por accidentes del trabajo y/o enfermedades profesionales, indemnización legal por vulneración de derechos fundamentales durante la relación laboral y/o con ocasión del despido y/o a causa de la terminación del contrato de trabajo por cualquiera otro motivo, ya sea que dichas prestaciones e indemnizaciones sean de origen legal o contractual o se hayan generado producto de la aplicación práctica del contrato de trabajo o como cláusula tácita del mismo, como también se deja expresa constancia de que el ex Empleador enteró oportunamente todas y cada una de las cotizaciones previsionales y de salud que corresponden en conformidad a la ley y que se le entregó los comprobantes de dichos pagos, razones por las cuales declara que <strong>${datos.datospersonales.nombreempresa}</strong> nada le adeuda por los conceptos antes indicados ni por ningún otro, sean de origen legal, contractual o extracontractual, derivado de la prestación de sus servicios y/o de la terminación del contrato de trabajo, por lo cual, no teniendo reclamo ni cargo alguno que formular, Don ${datos.datospersonales.nombretrabajador},  le otorga a el más amplio, total y completo finiquito respecto de todas y cada de las obligaciones, prestaciones e indemnizaciones antes indicadas, declaración que formula libre y espontáneamente, en perfecto y cabal conocimiento de todos y cada uno de sus derechos.
       </p>
 
       <p class="text-justify">
-          <strong>CUARTO:</strong> Las partes declaran que el acuerdo que consta en el presente instrumento tiene por objeto precaver entre ellas un eventual litigio, motivo por el cual en este acto y por el presente instrumento Don XXXXXXXXXXXXXXXX,  renuncia expresamente al ejercicio de toda acción legal o a la interposición de cualquiera demanda por despido injustificado, indebido o improcedente; despido indirecto; cobro de prestaciones laborales; indemnización de perjuicios por daño moral, lucro cesante y/o daño emergente; indemnización legal por accidente del trabajo y/o enfermedad profesional; indemnización legal por vulneración de derechos fundamentales durante la relación laboral y/o con ocasión del despido y/o a causa de la terminación del contrato de trabajo por cualquiera otro motivo, renunciando, en consecuencia, desde ya, al ejercicio de cualquiera acción o derecho que pudiera corresponderle en contra del ex empleador o en contra de <strong>Chile Capacita Spa</strong> derivados de la relación laboral que los vinculó y/o de la terminación del contrato de trabajo.
+          <strong>CUARTO:</strong> Las partes declaran que el acuerdo que consta en el presente instrumento tiene por objeto precaver entre ellas un eventual litigio, motivo por el cual en este acto y por el presente instrumento Don ${datos.datospersonales.nombretrabajador},  renuncia expresamente al ejercicio de toda acción legal o a la interposición de cualquiera demanda por despido injustificado, indebido o improcedente; despido indirecto; cobro de prestaciones laborales; indemnización de perjuicios por daño moral, lucro cesante y/o daño emergente; indemnización legal por accidente del trabajo y/o enfermedad profesional; indemnización legal por vulneración de derechos fundamentales durante la relación laboral y/o con ocasión del despido y/o a causa de la terminación del contrato de trabajo por cualquiera otro motivo, renunciando, en consecuencia, desde ya, al ejercicio de cualquiera acción o derecho que pudiera corresponderle en contra del ex empleador o en contra de <strong>${datos.datospersonales.nombreempresa}</strong> derivados de la relación laboral que los vinculó y/o de la terminación del contrato de trabajo.
       </p>
 
       <p class="text-justify">
-          <strong>QUINTO:</strong> Don XXXXXXXXXXXXX,  reconoce que todo el material escrito o codificado por computador que se manifieste en documentos, diseños de sistemas, discos, cintas, dibujos, informes, especificaciones, datos, memoranda u otro (los "Materiales") que haya realizado o concebido durante su empleo con el ex Empleador, será considerado como trabajos realizados por encargo y todo derecho, titulo e interés en los “Materiales” será de propiedad del ex Empleador.
+          <strong>QUINTO:</strong> Don ${datos.datospersonales.nombretrabajador},  reconoce que todo el material escrito o codificado por computador que se manifieste en documentos, diseños de sistemas, discos, cintas, dibujos, informes, especificaciones, datos, memoranda u otro (los "Materiales") que haya realizado o concebido durante su empleo con el ex Empleador, será considerado como trabajos realizados por encargo y todo derecho, titulo e interés en los “Materiales” será de propiedad del ex Empleador.
       </p>
 
       <p class="text-justify">
-          <strong>SEXTO:</strong> Don XXXXXXXXXXXXXXX,  reconoce que, durante la vigencia de su contrato con el ex Empleador, ha conocido y tenido acceso a Información Confidencial, esto es la que consiste en toda la información que no sea generalmente conocida por el público y a la cual haya tenido acceso, conocido u obtenido, por causa de la prestación de los servicios a la empresa de la Trabajador y que sea usada o que pueda ser usada en el negocio del ex Empleador. Incluye, pero no se limita a secretos confidenciales; diseños propietarios de software computacional y configuraciones de hardware; tecnología propietaria; nuevas ideas de productos y servicios; planes comerciales; datos comerciales, de comercio, financieros, investigación y de ventas; listas de clientes, prospectos, vendedores, o personal; información financiera y otra información personal relativa a los clientes y empleados; información confidencial sobre otras compañías y sus productos; e información expresamente denominada como “Propietaria”, “Confidencial” o “Interna”. Toda la Información Confidencial fue compartida a la ex trabajadora dentro de una relación de confianza. Don XXXXXXXXXXXXXXXX,  no usará ni divulgará, de manera alguna, ninguna Información Confidencial, como así mismo, no copiará, reproducirá, usará revelará o discutirá en forma alguna, en todo o en parte, la Información Confidencial por un periodo de 3 años de terminada la relación laboral.
-          Se deja constancia que Don XXXXXXXXXXXXXXXXX,  ha entregado al ex Empleador las copias, notas o extractos de Información Confidencial al terminar su contrato, además se obliga a no mantener en su poder, ni entregar a terceras personas, ni divulgar ninguna información que haya recibido, sobre las características internas, procedimientos, métodos de elaboración, negocios, productos, personal, proveedores, clientes, distribuidores, precios, ni cualquier otro dato o antecedente de que se haya enterado con motivo de su relación comercial con el ex Empleador, sea que dichos materiales o información sean o no considerados confidenciales y de propiedad del ex Empleador.            
+          <strong>SEXTO:</strong> Don ${datos.datospersonales.nombretrabajador},  reconoce que, durante la vigencia de su contrato con el ex Empleador, ha conocido y tenido acceso a Información Confidencial, esto es la que consiste en toda la información que no sea generalmente conocida por el público y a la cual haya tenido acceso, conocido u obtenido, por causa de la prestación de los servicios a la empresa de la Trabajador y que sea usada o que pueda ser usada en el negocio del ex Empleador. Incluye, pero no se limita a secretos confidenciales; diseños propietarios de software computacional y configuraciones de hardware; tecnología propietaria; nuevas ideas de productos y servicios; planes comerciales; datos comerciales, de comercio, financieros, investigación y de ventas; listas de clientes, prospectos, vendedores, o personal; información financiera y otra información personal relativa a los clientes y empleados; información confidencial sobre otras compañías y sus productos; e información expresamente denominada como “Propietaria”, “Confidencial” o “Interna”. Toda la Información Confidencial fue compartida a la ex trabajadora dentro de una relación de confianza. Don ${datos.datospersonales.nombretrabajador},  no usará ni divulgará, de manera alguna, ninguna Información Confidencial, como así mismo, no copiará, reproducirá, usará revelará o discutirá en forma alguna, en todo o en parte, la Información Confidencial por un periodo de 3 años de terminada la relación laboral.
+          Se deja constancia que Don ${datos.datospersonales.nombretrabajador},  ha entregado al ex Empleador las copias, notas o extractos de Información Confidencial al terminar su contrato, además se obliga a no mantener en su poder, ni entregar a terceras personas, ni divulgar ninguna información que haya recibido, sobre las características internas, procedimientos, métodos de elaboración, negocios, productos, personal, proveedores, clientes, distribuidores, precios, ni cualquier otro dato o antecedente de que se haya enterado con motivo de su relación comercial con el ex Empleador, sea que dichos materiales o información sean o no considerados confidenciales y de propiedad del ex Empleador.            
       </p>
 
       <p class="text-justify">
-          <strong>OCTAVO:</strong> Chile Capacita Spa. en cumplimiento a lo dispuesto en el artículo 13 de la ley N° 14.908, declara que respecto de Don XXXXXXXXXXXXXXXX,  a la fecha de suscripción del presente finiquito no ha sido notificado por ningún Tribunal, en cuanto a que haya decretado la retención de sus remuneraciones monto alguno por concepto de pensiones alimenticias, no existiendo por tanto obligación de retención que se deba cumplir o esté pendiente de cumplimiento, como así tampoco se está obligado a retener de las sumas que el ex trabajador percibe a la suscripción del presente finiquito los montos correspondientes a pensiones alimenticias.
+          <strong>OCTAVO:</strong> ${datos.datospersonales.nombreempresa}. en cumplimiento a lo dispuesto en el artículo 13 de la ley N° 14.908, declara que respecto de Don ${datos.datospersonales.nombretrabajador},  a la fecha de suscripción del presente finiquito no ha sido notificado por ningún Tribunal, en cuanto a que haya decretado la retención de sus remuneraciones monto alguno por concepto de pensiones alimenticias, no existiendo por tanto obligación de retención que se deba cumplir o esté pendiente de cumplimiento, como así tampoco se está obligado a retener de las sumas que el ex trabajador percibe a la suscripción del presente finiquito los montos correspondientes a pensiones alimenticias.
       </p>
 
       <p class="text-justify">
-          <strong>NOVENO:</strong> Las partes declaran que el presente finiquito tiene pleno poder liberatorio respecto de cada una de las materias en el expuestas y que previa lectura y ratificación por parte del Trabajador, se firma el presente finiquito en tres ejemplares, quedando uno de ellos en poder de Don XXXXXXXXXXXXXXXX,  otro en poder de Chile Capacita Spa, y el tercero en poder del ministro de fe.
+          <strong>NOVENO:</strong> Las partes declaran que el presente finiquito tiene pleno poder liberatorio respecto de cada una de las materias en el expuestas y que previa lectura y ratificación por parte del Trabajador, se firma el presente finiquito en tres ejemplares, quedando uno de ellos en poder de Don ${datos.datospersonales.nombretrabajador},  otro en poder de ${datos.datospersonales.nombreempresa}, y el tercero en poder del ministro de fe.
       </p>
 
       <div class="mt-200px">
-          <div class="d-flex justify-content-between">
-              <div><strong>EMPLEADOR</strong></div>
-              <div><strong>TRABAJADOR</strong></div>
+          <div class="row">
+              <div class="col"><strong>EMPLEADOR</strong></div>
+              <div class="col text-right"><strong>TRABAJADOR</strong></div>
           </div>
-          <div class="d-flex justify-content-between">
-              <div><strong>Chile Capacita Spa</strong></div>
-              <div><strong>XXXXXXXXXXXXXXXXXXXXXX</strong></div>
+          <div class="row">
+              <div class="col"><strong>${datos.datospersonales.nombreempresa}</strong></div>
+              <div class="col text-right"><strong>${datos.datospersonales.nombretrabajador}</strong></div>
           </div>
-          <div class="d-flex justify-content-between">
-              <div><strong>76.557.775-6</strong></div>
-              <div><strong>26.869.858-2</strong></div>
+          <div class="row">
+              <div class="col"><strong>${datos.datospersonales.rutempresa}</strong></div>
+              <div class="col text-right"><strong>${datos.datospersonales.ruttrabajador}</strong></div>
           </div>
       </div>
     </div>
