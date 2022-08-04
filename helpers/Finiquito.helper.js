@@ -106,6 +106,9 @@ const css=`
   .font-size-13pt {
     font-size: 13pt;
   }
+  .font-size-10 {
+    font-size:10px;
+  }
   .font-size-12 {
     font-size: 12px;
   }
@@ -259,7 +262,7 @@ exports.modeloCartaAviso2 = (datos) => {
         <div class="d-flex justify-content-end">
           <p>En ${datos.datospersonales.direccion} a ${fechaactual}</p>
         </div>
-        <div class="font-size-20">
+        <div class="font-size-10">
             <p>Estimado señor:</p>
             <p class="text-justify text-indent-50">Nos permitimos comunicar que, con 30 días de anticipación que a su contrato de trabajo  se le pondrá termino con fecha ${fechatermino}, por la causal del ${articulo}, ${titulo}</p>
             ${fundamento}
@@ -618,7 +621,7 @@ exports.modeloFiniquito2 = (datos)=>{
   
     <div class="container">
       ${logo}
-      <h2 class="text-center">FINIQUITO DE CONTRATO DE TRABAJO</h2>
+      <h3 class="text-center">FINIQUITO DE CONTRATO DE TRABAJO</h3>
       <p class="text-justify">
           En Santiago de Chile, a ${fechaactual}, entre <strong><strong>${datos.datospersonales.nombreempresa}</strong></strong>,  Rol Único Tributario N° ${datos.datospersonales.rutempresa}, representada por don ${datos.datospersonales.nombrerepresentante}, cédula nacional de identidad N° ${datos.datospersonales.rutrepresentante}, ambos domiciliados en ${datos.datospersonales.direccion} comuna de ${datos.datospersonales.comunaempresa}, en adelante también el “ex Empleador”; y Don ${datos.datospersonales.nombretrabajador}, cédula nacional de identidad N° ${datos.datospersonales.ruttrabajador}, en adelante también el "ex Trabajadora", en conjunto como las partes, se acuerda el siguiente finiquito:
       </p>
