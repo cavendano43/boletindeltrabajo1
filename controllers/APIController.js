@@ -116,10 +116,10 @@ class APIController{
     static getIndicadores = async(req,res)=>{
         try{
             const types=req.params.tipo;
-            const anio=req.headers.anio
+            const anio=req.headers.anio;
             let tipo;
             let indicador;
-            if(anio==''){
+            if(anio===''){
                 if(types=='ipc'){
                     tipo="I.P.C";
                 }
@@ -133,13 +133,13 @@ class APIController{
                     tipo='UTM';
                 }
                 indicador=await Indicadores.find({tipo:tipo}).sort({fecha:1});
-            }else{
+            } else{
                 tipo=types;
                 indicador=await Indicadores.find({tipo:new RegExp(tipo, "i"),anio:anio}).sort({fecha:1});
             }
 
             if(indicador){
-                return res.status(200).json(indicador);
+                return res.status(200).json({code:200, status: true, payload: indicador});
             }
         } catch(e) {
             return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
