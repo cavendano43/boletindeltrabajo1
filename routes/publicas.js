@@ -41,6 +41,7 @@ router.post("/webpay-normal/finish", WebpayPlusController.finish);
 router.post("/calculo-finiquito",FiniquitoController.calculo);
 router.post("/generar-finiquito",FiniquitoController.finiquito);
 router.post("/carta-finiquito",FiniquitoController.cartaAviso);
+router.get("/feriados-legal",FiniquitoController.feriadoLegal);
 ////////////////////// grupoboletindeltrabajo //////////////////
 router.get('/noticias/:area/',NoticiasController.noticiasAreas);
 router.get('/ultimas/noticias',NoticiasController.noticiasUltima);
