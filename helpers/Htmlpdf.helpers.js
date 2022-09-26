@@ -1,10 +1,14 @@
 const pdf = require('html-pdf');
 //const {FileUploadS3} = require('./AWS-Helper.js');
 const axios = require("axios");
+const { logger } = require('../config/pino');
 exports.generarPDF = async(html,name)=>{
     try{
+        logger.info(`[generarPDF] inicio`);
         const file=`../frontend/src/assets/storage/finiquito/${name}`;
-    
+        const url = process.env.API_PORTAL_FINIQUITO;
+        logger.info(`[generarPDF] url ${url}`);
+        
         let response;
         if(process.env.AMBIENT === 'QA'){
             response = pdf.create(html).toFile(file, function(err, resp) {
@@ -19,11 +23,13 @@ exports.generarPDF = async(html,name)=>{
         } else {
             response = await pdf.create(html).toBuffer(async function(err, buffer){
                 try{
+                    logger.info(`[generarPDF] buffer: ${buffer}`);
                     const string64 = buffer.toString('base64');
-                    const resp =  await axios.post(`${process.env.API_PORTAL_FINIQUITO}`, {
+                    const resp =  await axios.post(url, {
                         buffer:string64,
                         name:name,
                     });
+                    logger.info(`[generarPDF] response: ${JSON.stringify(resp)}`);
                     return resp.data;
                 } catch(e) {
                     return e;
