@@ -548,9 +548,23 @@ exports.modeloFiniquito2 = (datos)=>{
   const fechatermino=moment(datos.datosfechas.fechatermino).format('LL');
   const causal=datos.datospersonales.causal;
   const logo = datos.datospersonales.logo !='' ? `<div class="d-flex"><img class="img-fluid max-w-150" src="${datos.datospersonales.logo}"/></div>` : '';
+  const clausulaoctavo = datos.datosresumen.selectpensionalimenticia ? 
+  `<strong>OCTAVO:</strong> ${datos.datospersonales.nombreempresa} en cumplimiento a lo dispuesto en el artículo 13 de la ley N°
+  14.908, declara que respecto de Don ${datos.datospersonales.nombretrabajador} el Tribunal ${datos.datosresumen.nombretribunal} decreto retención de sus remuneraciones por concepto de pensiones alimenticias, obligación de retención que se fue cumplida mensualmente desde que fue notificada la resolución respectiva y que conforme las normas legales vigentes también son descontadas de las sumas que el ex trabajador percibe a la suscripción del presente finiquito, los montos correspondientes a pensiones alimenticias.`
+  :
+  `<strong>OCTAVO:</strong> ${datos.datospersonales.nombreempresa}. en cumplimiento a lo dispuesto en el artículo 13 de la ley N° 14.908, declara que respecto de Don ${datos.datospersonales.nombretrabajador},  a la fecha de suscripción del presente finiquito no ha sido notificado por ningún Tribunal, en cuanto a que haya decretado la retención de sus remuneraciones monto alguno por concepto de pensiones alimenticias, no existiendo por tanto obligación de retención que se deba cumplir o esté pendiente de cumplimiento, como así tampoco se está obligado a retener de las sumas que el ex trabajador percibe a la suscripción del presente finiquito los montos correspondientes a pensiones alimenticias.`; 
   let articulo = "";
   let titulocausal = "";
   let indemnizacion= "";
+  let pension = datos.datosresumen.selectpensionalimenticia ? `
+  <div class="row">
+    <div class="w-60">
+      <p class="my-5px">RETENCIÓN PENSIONES ALIMENTOS</p>
+    </div>
+    <div class="w-40">
+      <p class="my-5px">-($${datos.datosresumen.pensionalimenticia}.-)</p>
+    </div>
+  </div>`: "";
   if(causal=="Artículo 161 Necesidades de La Empresa" || causal=="Artículo 161 Desahucio"){
     articulo= causal=="Artículo 161 Necesidades de La Empresa" ? `${causal.split(" ",2).join(" ")}, inciso 1°` : `${causal.split(" ",2).join(" ")}, inciso 2°`;
     titulocausal=causal=="Artículo 161 Necesidades de La Empresa" ? `${causal.slice(13)} establecimiento y servicio`:``;
@@ -572,6 +586,7 @@ exports.modeloFiniquito2 = (datos)=>{
             <p class="my-5px">$${datos.datosresumen.indemnizacionanioserviciototal}.-</p>
           </div>
       </div>
+      ${pension}
       <div class="row">
           <div class="w-60">
             <p class="my-5px">DESCUENTO APORTE SALDO EMPLEADOR AL SEG. CESANTIA</p>
@@ -584,7 +599,7 @@ exports.modeloFiniquito2 = (datos)=>{
   }else {
     articulo=causal.split(" ",4).join(" ");
     titulocausal=causal.slice(18);
-    indemnizacion=``;
+    indemnizacion=`${pension}`;
 
     if(causal=="Artículo 160 N° 1 Conductas Indebidas de Caracter Grave"){
       titulocausal+=`, debidamente comprobadas, ${datos.datospersonales.inciso}`;
@@ -674,7 +689,7 @@ exports.modeloFiniquito2 = (datos)=>{
       </p>
 
       <p class="text-justify">
-          <strong>OCTAVO:</strong> ${datos.datospersonales.nombreempresa}. en cumplimiento a lo dispuesto en el artículo 13 de la ley N° 14.908, declara que respecto de Don ${datos.datospersonales.nombretrabajador},  a la fecha de suscripción del presente finiquito no ha sido notificado por ningún Tribunal, en cuanto a que haya decretado la retención de sus remuneraciones monto alguno por concepto de pensiones alimenticias, no existiendo por tanto obligación de retención que se deba cumplir o esté pendiente de cumplimiento, como así tampoco se está obligado a retener de las sumas que el ex trabajador percibe a la suscripción del presente finiquito los montos correspondientes a pensiones alimenticias.
+          ${clausulaoctavo}
       </p>
 
       <p class="text-justify">

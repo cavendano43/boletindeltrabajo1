@@ -1,7 +1,7 @@
 const express= require('express');
 const Port = process.env.PORT || 4000;
 const cors = require('cors');
-
+const { logger } = require('./config/pino');
 //// inicializacion///
 const app= express();
 require('dotenv').config({path:'variables.env'});
@@ -19,5 +19,5 @@ app.use('/auth',rutasauth);
 app.use('/admin',rutasprivadas);
 
 app.listen(Port ,()=>{
-    console.log('Servidor iniciado',Port);
+    logger.info(`Servidor iniciado ${Port}`);
 })
