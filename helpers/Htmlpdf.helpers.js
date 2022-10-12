@@ -27,7 +27,7 @@ exports.generarPDF = async(html,name)=>{
                 try{
                     
                     const string64 = buffer.toString('base64');
-                    const resp =  await axios.post('https://portaldesoluciones.cl/models/process/finiquitogrupo.php', {
+                    const resp =  await axios.post(url, {
                         buffer:string64,
                         name:name,
                     });

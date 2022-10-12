@@ -213,16 +213,16 @@ exports.modeloCartaAviso2 = (datos) => {
   let articulo;
   let inciso =  datos.datospersonales.inciso;
   let titulo = "";
-  let fundamento = '';
+  let fundamento = `<p class="text-justify text-indent-50">Los hechos en que se funda la causal invocada consisten en la ${datos.datospersonales.fundamentodedespido},  lo cual nos obliga a su separación.</p>`;
   if (causal==="Artículo 161 Necesidades de La Empresa" || causal==="Artículo 161 Desahucio"){
     articulo=causal.split(" ",2).join(" ").toLowerCase();
     titulo = 'inciso primero, del Código del Trabajo, esto es, necesidades de la empresa, establecimiento o servicio, derivados de la racionalización o modernización de los mismos, bajas en la productividad, cambios en las condiciones del mercado o de la economía, que hagan necesaria la separación de uno o más trabajadores.';
-    fundamento = '';
+    //fundamento = '';
   }else{
     articulo=causal.split(" ",4).join(" ").toLowerCase();
     titulo=` del Código del Trabajo, esto es, ${causal.slice(18).toLowerCase()}`;
    
-    fundamento = `<p class="text-justify text-indent-50">Los hechos en que se funda la causal invocada consisten en la ${datos.datospersonales.fundamentodedespido},  lo cual nos obliga a su separación.</p>`;
+    //fundamento = `<p class="text-justify text-indent-50">Los hechos en que se funda la causal invocada consisten en la ${datos.datospersonales.fundamentodedespido},  lo cual nos obliga a su separación.</p>`;
     if(causal==="Artículo 160 N° 1 Conductas Indebidas de Caracter Grave"){
       titulo+=`, debidamente comprobadas, ${datos.datospersonales.inciso}`;
     }
@@ -638,7 +638,7 @@ exports.modeloFiniquito2 = (datos)=>{
       ${logo}
       <h3 class="text-center">FINIQUITO DE CONTRATO DE TRABAJO</h3>
       <p class="text-justify">
-          En Santiago de Chile, a ${fechaactual}, entre <strong><strong>${datos.datospersonales.nombreempresa}</strong></strong>,  Rol Único Tributario N° ${datos.datospersonales.rutempresa}, representada por don ${datos.datospersonales.nombrerepresentante}, cédula nacional de identidad N° ${datos.datospersonales.rutrepresentante}, ambos domiciliados en ${datos.datospersonales.direccion} comuna de ${datos.datospersonales.comunaempresa}, en adelante también el “ex Empleador”; y Don ${datos.datospersonales.nombretrabajador}, cédula nacional de identidad N° ${datos.datospersonales.ruttrabajador}, en adelante también el "ex Trabajadora", en conjunto como las partes, se acuerda el siguiente finiquito:
+          En Santiago de Chile, a ${fechatermino}, entre <strong><strong>${datos.datospersonales.nombreempresa}</strong></strong>,  Rol Único Tributario N° ${datos.datospersonales.rutempresa}, representada por don ${datos.datospersonales.nombrerepresentante}, cédula nacional de identidad N° ${datos.datospersonales.rutrepresentante}, ambos domiciliados en ${datos.datospersonales.direccion} comuna de ${datos.datospersonales.comunaempresa}, en adelante también el “ex Empleador”; y Don ${datos.datospersonales.nombretrabajador}, cédula nacional de identidad N° ${datos.datospersonales.ruttrabajador}, en adelante también el "ex Trabajadora", en conjunto como las partes, se acuerda el siguiente finiquito:
       </p>
       <p class="text-justify">
           <strong>PRIMERO</strong>: Don ${datos.datospersonales.nombretrabajador}, declara que prestó servicios como ${datos.datospersonales.cargo} para <strong>${datos.datospersonales.nombreempresa}</strong>. desde el ${fechainicio} hasta el ${fechatermino}, fecha en que se puso término al respectivo contrato de trabajo de acuerdo con el ${articulo}, del Código del Trabajo, esto es, por <strong>“${titulocausal}”</strong>.
