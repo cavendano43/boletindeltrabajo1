@@ -3,6 +3,7 @@ var moment = require('moment');
 moment.locale('es'); 
 /////// helpers ////////
 const { encrypPassword } = require("../helpers/users.helper");
+const { logger } = require('../config/pino');
 ///// models ///////////////////////////
 const Indicadores=require('../models/Indicadores');
 const PreguntasFrecuentes=require('../models/PreguntasFrecuentes');
@@ -177,29 +178,44 @@ class AdminController{
     }
     static getNoticia = async(req,res)=>{
         try{
+            logger.info(`[AdminController] getNoticia inicio`);
             const noticia=await Noticias.find();
-            return res.status(200).json({code:200,status:true,payload:noticia});
+            const response = {code:200,status:true,payload:noticia}
+            logger.info(`[AdminController] getNoticia response dataBase ${JSON.stringify(response)}`);
+            return res.status(200).json(response);
         }catch(e){
-            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+            const error = {code:404,status:false,message:"error del servidor",errors:e};
+            logger.error(`[AdminController] getNoticia response dataBase ${JSON.stringify(error)}`);
+            return res.status(404).send(error);
         }
     }
 
     static postNoticia = async(req,res)=>{
         try {
+            logger.info(`[AdminController] postNoticia inicio`);
             const noticia=req.body;
             noticia.fechaFormateada=moment(noticia.fechaEdicion).format('LL');
             noticia.fechaSubida=noticia.fechaEdicion;
             let portada = "";
-            if(req.file){
-                const filename=req.file.filename;
-                portada=`assets/storage/noticias/${filename}`
-            }
 
+            if(noticia.type === "portal"){
+                logger.info(`[AdminController] postNoticia guardo desde portal`);
+                portada = noticia.portada;
+            }else {
+                logger.info(`[AdminController] postNoticia guardo desde grupo`);
+                if(req.file){
+                    const filename=req.file.filename;
+                    portada=`assets/storage/noticias/${filename}`
+                }
+            }
+        
             noticia.portada=portada;
             noticia.tags1=req.body.tags;
             const noticiasModel = new Noticias(noticia);
             const response = await noticiasModel.save();
-            return res.status(200).json({code:200,status:true,payload:response})
+            const resp = {code:200,status:true,payload:response}
+            logger.info(`[AdminController] postNoticia response: ${JSON.stringify(resp)}`);
+            return res.status(200).json(resp);
         } catch(e){
             return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
         }
