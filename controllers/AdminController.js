@@ -181,11 +181,11 @@ class AdminController{
             logger.info(`[AdminController] getNoticia inicio`);
             const noticia=await Noticias.find();
             const response = {code:200,status:true,payload:noticia}
-            logger.info(`[AdminController] getNoticia response dataBase ${JSON.stringify(response)}`);
+            logger.info(`[AdminController] getNoticia response`);
             return res.status(200).json(response);
         }catch(e){
             const error = {code:404,status:false,message:"error del servidor",errors:e};
-            logger.error(`[AdminController] getNoticia response dataBase ${JSON.stringify(error)}`);
+            logger.error(`[AdminController] getNoticia error: ${JSON.stringify(error)}`);
             return res.status(404).send(error);
         }
     }
