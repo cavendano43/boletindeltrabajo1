@@ -4,7 +4,7 @@ moment.locale('es');
 const css=`
   .container{
     margin:0 3rem !important;
-    font-size:15px;
+    font-size:14px;
     font-family:'Times New Roman';
   }
   .max-width-150{
@@ -111,6 +111,9 @@ const css=`
   }
   .font-size-10 {
     font-size:10px;
+  }
+  .font-size-14 {
+    font-size:14px;
   }
   .font-size-15 {
     font-size:15px;
@@ -268,7 +271,7 @@ exports.modeloCartaAviso2 = (datos) => {
         <div class="d-flex justify-content-end">
           <p>En ${datos.datospersonales.direccion} a ${fechaactual}</p>
         </div>
-        <div class="font-size-15">
+        <div class="font-size-14">
             <p>Estimado señor:</p>
             <p class="text-justify text-indent-50">Nos permitimos comunicar que, con 30 días de anticipación que a su contrato de trabajo  se le pondrá termino con fecha ${fechatermino}, por la causal del ${articulo}, ${titulo}</p>
             ${fundamento}
@@ -278,7 +281,7 @@ exports.modeloCartaAviso2 = (datos) => {
             <p class="text-justify text-indent-50">Le informo a usted que de acuerdo a lo dispuesto en el artículo 162 del Código del Trabajo, al momento de suscribir el finiquito, si lo estima necesario usted podrá formular la reserva de derechos que estime necesaria.</p>
             <p class="text-justify">Saluda a usted,</p>
         </div>
-        <div class="mb-3">
+        <div class="${logo === '' ? 'mt-200px':'mt-150px'} mb-5">
             <p class="text-center">
             <b>${datos.datospersonales.nombrerepresentante}</b>
             </p>
