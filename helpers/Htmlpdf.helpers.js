@@ -1,6 +1,6 @@
 const pdf = require('html-pdf');
 const pdf_html = require('html-pdf-node');
-const options = { format: 'A4' };
+const options = { format: 'A4', args: ['--no-sandbox', '--disable-setuid-sandbox'],margin:{top:34,bottom:34} };
 //const {FileUploadS3} = require('./AWS-Helper.js');
 const axios = require("axios");
 const { logger } = require('../config/pino');
@@ -25,7 +25,7 @@ exports.generarPDF = async(html,name,res)=>{
                 }
             });
         } else {
-            const file = { content: html };
+            const file = { content: html};
             response = pdf_html.generatePdf(file, options).then(async buffer => {
 
                 try{

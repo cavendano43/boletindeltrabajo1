@@ -3,9 +3,8 @@ moment.locale('es');
 
 const css=`
   .container{
-    padding:3rem;
-    margin-bottom:3rem !important;
-    font-size:10px;
+    margin:0 3rem !important;
+    font-size:15px;
     font-family:'Times New Roman';
   }
   .max-width-150{
@@ -95,6 +94,9 @@ const css=`
   .mt-100px{
     margin-top:100px;
   }
+  .mt-150px{
+    margin-top:150px;
+  }
   .mt-200px{
     margin-top:200px;
   }
@@ -109,6 +111,9 @@ const css=`
   }
   .font-size-10 {
     font-size:10px;
+  }
+  .font-size-15 {
+    font-size:15px;
   }
   .font-size-12 {
     font-size: 12px;
@@ -263,7 +268,7 @@ exports.modeloCartaAviso2 = (datos) => {
         <div class="d-flex justify-content-end">
           <p>En ${datos.datospersonales.direccion} a ${fechaactual}</p>
         </div>
-        <div class="font-size-10">
+        <div class="font-size-15">
             <p>Estimado señor:</p>
             <p class="text-justify text-indent-50">Nos permitimos comunicar que, con 30 días de anticipación que a su contrato de trabajo  se le pondrá termino con fecha ${fechatermino}, por la causal del ${articulo}, ${titulo}</p>
             ${fundamento}
@@ -282,7 +287,7 @@ exports.modeloCartaAviso2 = (datos) => {
             </p>
         </div>
         
-        <div class="border-1 p-3">
+        <div class="border-1 ${logo === '' ? 'p-3':'p-2'}">
             <p class="text-justify"><strong>Nota:</strong> Las formalidades de esta comunicación de término son:</p>
             <p class="text-justify">1.- El Trabajador debe ser notificado personalmente con a lo menos 30 días de anticipación, si no se da el aviso con esa anticipación debe  pagarse la indemnización sustitutiva del aviso previo.</p>
             <p class="text-justify">2.- Se debe notificar a la Inspección del Trabajo dentro del mismo plazo del punto anterior, las comunicaciones a la Inspección deben hacer vía el portal Web de la Dirección del Trabajo.</p>
@@ -697,7 +702,7 @@ exports.modeloFiniquito2 = (datos)=>{
           <strong>NOVENO:</strong> Las partes declaran que el presente finiquito tiene pleno poder liberatorio respecto de cada una de las materias en el expuestas y que previa lectura y ratificación por parte del Trabajador, se firma el presente finiquito en tres ejemplares, quedando uno de ellos en poder de Don ${datos.datospersonales.nombretrabajador},  otro en poder de ${datos.datospersonales.nombreempresa}, y el tercero en poder del ministro de fe.
       </p>
 
-      <div class="mt-200px">
+      <div class="${logo === '' ? 'mt-200px':'mt-150px'}">
           <div class="row">
               <div class="col"><strong>EMPLEADOR</strong></div>
               <div class="col text-right"><strong>TRABAJADOR</strong></div>
