@@ -23,6 +23,9 @@ const css=`
   .p-3 {
       padding: 1rem!important;
   }
+  .p-4 {
+    padding: 1.5rem!important;
+  }
   .pt-3{
   padding-top:1rem !important;
   }
@@ -293,7 +296,7 @@ exports.modeloCartaAviso2 = (datos) => {
             </p>
         </div>
         
-        <div class="border-1 ${logo === '' ? 'p-3':'p-2'}">
+        <div class="border-1 ${logo === '' ? 'p-4':'p-2'}">
             <p class="text-justify"><strong>Nota:</strong> Las formalidades de esta comunicación de término son:</p>
             <p class="text-justify">1.- El Trabajador debe ser notificado personalmente con a lo menos 30 días de anticipación, si no se da el aviso con esa anticipación debe  pagarse la indemnización sustitutiva del aviso previo.</p>
             <p class="text-justify">2.- Se debe notificar a la Inspección del Trabajo dentro del mismo plazo del punto anterior, las comunicaciones a la Inspección deben hacer vía el portal Web de la Dirección del Trabajo.</p>
