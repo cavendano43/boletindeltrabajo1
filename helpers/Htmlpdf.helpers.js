@@ -2,6 +2,9 @@ const pdf = require('html-pdf');
 //const {FileUploadS3} = require('./AWS-Helper.js');
 const axios = require("axios");
 const { logger } = require('../config/pino');
+const options={
+    "phantomPath": "./node_modules/phantomjs/bin/phantomjs", 
+}
 exports.generarPDF = async(html,name,res)=>{
     
     try{

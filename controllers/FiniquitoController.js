@@ -14,7 +14,7 @@ class FiniquitoController {
             const filename=`carta-aviso-${Date.now()}.pdf`;
             //const pdf=`${process.env.API_PORTAL}assest/storage/finiquito/${filename}`;
             await generarPDF(html,filename,res);
-            logger.info(`[FiniquitoController] cartaAviso response end}`);
+            logger.info(`[FiniquitoController] cartaAviso response end`);
             //const response = {code:200,status:true,"url":pdf}
             //logger.info(`[FiniquitoController] cartaAviso response ${JSON.stringify(response)}}`);
             //return response;
