@@ -12,11 +12,12 @@ class FiniquitoController {
             logger.info(`[FiniquitoController] cartaAviso body ${JSON.stringify(body)}}`);
             const html=modeloCartaAviso2(body);
             const filename=`carta-aviso-${Date.now()}.pdf`;
-            const pdf=`${process.env.API_PORTAL}assest/storage/finiquito/${filename}`;
-            await generarPDF(html,filename);
-            const response = {code:200,status:true,"url":pdf}
-            logger.info(`[FiniquitoController] cartaAviso response ${JSON.stringify(response)}}`);
-            res.json(response);
+            //const pdf=`${process.env.API_PORTAL}assest/storage/finiquito/${filename}`;
+            await generarPDF(html,filename,res);
+            logger.info(`[FiniquitoController] cartaAviso response end}`);
+            //const response = {code:200,status:true,"url":pdf}
+            //logger.info(`[FiniquitoController] cartaAviso response ${JSON.stringify(response)}}`);
+            //return response;
         }catch(e){
             const error = {code:404,status:false,message:"error del servidor",errors:e}
             logger.error(`[FiniquitoController] cartaAviso error ${JSON.stringify(error)}}`);
@@ -31,13 +32,14 @@ class FiniquitoController {
             logger.info(`[FiniquitoController] finiquito body ${JSON.stringify(body)}}`);
             const html=modeloFiniquito2(body);
             const filename=`finiquito-${Date.now()}.pdf`;
-            const pdf=`${process.env.API_PORTAL}assest/storage/finiquito/${filename}`;
-            await generarPDF(html,filename);
-            const response = {code:200,status:true,"url":pdf}
-            logger.info(`[FiniquitoController] finiquito response ${JSON.stringify(response)}}`);
-            res.json(response);
+            //const pdf=`${process.env.API_PORTAL}assest/storage/finiquito/${filename}`;
+            await generarPDF(html,filename,res);
+            logger.info(`[FiniquitoController] finiquito end`);
+            //const response = {code:200,status:true,"url":pdf}
+            //logger.info(`[FiniquitoController] finiquito response ${JSON.stringify(response)}}`);
+            //res.json(response);
         }catch(e){
-            const error = {code:404,status:false,message:"error del servidor",errors:e}
+            const error = {code:404,sttus:false,message:"error del servidor",errors:e}
             logger.error(`[FiniquitoController] finiquito error ${JSON.stringify(error)}}`);
             return res.status(404).send(error);
         }
@@ -50,9 +52,11 @@ class FiniquitoController {
             logger.info(`[FiniquitoController] calculo body ${JSON.stringify(body)}}`);
             const html=modeloCalculo(body);
             const filename=`calculos-${Date.now()}.pdf`;
-            const pdf=`${process.env.API_PORTAL}assest/storage/finiquito/${filename}`;
-            await generarPDF(html,filename);
-            res.json({code:200,status:true,"url":pdf});
+            //const pdf=`${process.env.API_PORTAL}assest/storage/finiquito/${filename}`;
+            await generarPDF(html,filename,res);
+            logger.info(`[FiniquitoController] calculo end`);
+            //logger.info(`[FiniquitoController] calculo buffer ${buffer}}`);
+            //res.json({code:200,status:true,"url":pdf});
         }catch(e){
             const error = {code:404,status:false,message:"error del servidor",errors:e}
             logger.error(`[FiniquitoController] calculo error ${JSON.stringify(error)}}`);

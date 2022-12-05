@@ -201,7 +201,7 @@ class AdminController{
             if(noticia.type === "portal"){
                 logger.info(`[AdminController] postNoticia guardo desde portal`);
                 portada = noticia.portada;
-            }else {
+            } else {
                 logger.info(`[AdminController] postNoticia guardo desde grupo`);
                 if(req.file){
                     const filename=req.file.filename;

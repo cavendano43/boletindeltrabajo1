@@ -593,7 +593,7 @@ exports.modeloFiniquito2 = (datos)=>{
             <p class="my-5px">DESCUENTO APORTE SALDO EMPLEADOR AL SEG. CESANTIA</p>
           </div>
           <div class="w-40">
-            <p class="my-5px">-($${datos.datosresumen.descuentoaporteafc}.-)</p>
+            <p class="my-5px">-($${datos.datosresumen.descuentoaporteafc !==''? datos.datosresumen.descuentoaporteafc:0}.-)</p>
           </div>
       </div>
     `;
