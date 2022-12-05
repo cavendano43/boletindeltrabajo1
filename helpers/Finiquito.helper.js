@@ -100,6 +100,9 @@ const css=`
   .mt-200px{
     margin-top:200px;
   }
+  .mt-250px{
+    margin-top:250px;
+  }
   .mb-4 {
     margin-bottom:.75rem;
   }
@@ -281,7 +284,7 @@ exports.modeloCartaAviso2 = (datos) => {
             <p class="text-justify text-indent-50">Le informo a usted que de acuerdo a lo dispuesto en el artículo 162 del Código del Trabajo, al momento de suscribir el finiquito, si lo estima necesario usted podrá formular la reserva de derechos que estime necesaria.</p>
             <p class="text-justify">Saluda a usted,</p>
         </div>
-        <div class="${logo === '' ? 'mt-200px':'mt-150px'} mb-5">
+        <div class="${logo === '' ? 'mt-250px':'mt-150px'} mb-5">
             <p class="text-center">
             <b>${datos.datospersonales.nombrerepresentante}</b>
             </p>
