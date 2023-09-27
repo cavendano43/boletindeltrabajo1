@@ -11,12 +11,14 @@ connectDB();
 const rutaspublicas = require('./routes/publicas');
 const rutasauth = require('./routes/auth');
 const rutasprivadas = require('./routes/privadas');
+const rutasrespaldo = require('./routes/respaldo.router');
 /// use ///
 app.use(express.json({extended:true}))
 app.use(cors());
 app.use(rutaspublicas);
 app.use('/auth',rutasauth);
 app.use('/admin',rutasprivadas);
+app.use('/respaldo',rutasrespaldo);
 
 app.listen(Port ,()=>{
     logger.info(`Servidor iniciado ${Port}`);

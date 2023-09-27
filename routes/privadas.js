@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const { logger } = require('../config/pino');
 ////////// helpers  //////////
 const upload = require('../helpers/MulterAdmin.helper');
 ////////// controllers /////////
 const AdminController = require ('../controllers/AdminController');
+
+logger.info(`[AdminRouter] GET /slider`);
 router.get('/slider',AdminController.getSlider);
+logger.info(`[AdminRouter] GET /calendario`);
 router.get('/calendario',AdminController.getCalendar);
 router.get('/popups',AdminController.getPopups);
 router.post('/calendario/registrar',upload.single('calendario'),AdminController.postCalendar);
