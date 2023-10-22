@@ -30,13 +30,18 @@ exports.generarPDF = async(html,name,res)=>{
 
                 try{
                     const string64 = buffer.toString('base64');
-                    const resp =  await axios.post(url, {
-                        buffer:string64,
-                        name:name,
-                    });
+                    // const resp =  await axios.post(url, {
+                    //     buffer:string64,
+                    //     name:name,
+                    // });
                     
-                    logger.info(`[generarPDF] response portaldesoluciones: ${JSON.stringify(resp.data)}`);
-                    const responsep = await res.status(200).json(resp.data);
+                    logger.info(`[generarPDF] response portaldesoluciones: ${JSON.stringify(string64)}`);
+                    const resp = {
+                        code:200,
+                        message:"finiquito generado",
+                        url:string64
+                    }
+                    const responsep = await res.status(200).json(resp);
                     return responsep;
                 } catch(e) {
                     logger.info(`[generarPDF] error portaldesoluciones: ${JSON.stringify(e)}`);

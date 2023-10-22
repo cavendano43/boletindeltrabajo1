@@ -13,7 +13,7 @@ const rutasauth = require('./routes/auth');
 const rutasprivadas = require('./routes/privadas');
 const rutasrespaldo = require('./routes/respaldo.router');
 /// use ///
-app.use(express.json({extended:true}))
+app.use(express.json({extended:true,limit:"50mb"}))
 app.use(cors());
 app.use(rutaspublicas);
 app.use('/auth',rutasauth);
