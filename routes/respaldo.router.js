@@ -15,4 +15,8 @@ router.post('/usuario', RespaldoController.UsuarioR);
 logger.info(`[RespaldoRouter] GET /respaldo/noticias`);
 router.get('/noticias', RespaldoController.NoticiasR);
 
+
+logger.info(`[RespaldoRouter] GET /respaldo/feriado-legal`);
+router.get('/feriado-legal', RespaldoController.FeriadoLegalR);
+
 module.exports = router;

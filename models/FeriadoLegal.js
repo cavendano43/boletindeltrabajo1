@@ -2,7 +2,6 @@ const { Schema, model } = require('mongoose');
 
 
 const FeriadoLegalchema = new Schema({
-
     nombre:String,
     comentario:String,
     fecha:String,

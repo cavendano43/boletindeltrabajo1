@@ -14,7 +14,13 @@ router.get('/popups',AdminController.getPopups);
 router.post('/calendario/registrar',upload.single('calendario'),AdminController.postCalendar);
 router.put('/calendario/editar',upload.single('calendario'),AdminController.putCalendar);
 router.delete('/calendario/eliminar/:id',AdminController.deleteCalendar);
+logger.info(`[AdminRouter] GET /ferido-legal`);
 router.get('/ferido-legal',AdminController.getFeriadoLegal);
+
+
+logger.info(`[AdminRouter] POST /ferido-legal`);
+router.get('/ferido-legal/add',AdminController.addFeriadosLegales);
+
 router.get('/newsletter',AdminController.getNewsletter);
 router.delete('/newsletter/eliminar-all',AdminController.deleteNewsletterAll);
 router.get('/usuario',AdminController.getUser);

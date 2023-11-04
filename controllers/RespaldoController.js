@@ -1,5 +1,7 @@
 const axios = require("axios");
 const FormData = require('form-data');
+
+const { encrypPassword } = require("../helpers/users.helper");
 ///// models ///////////////////////////
 const Indicadores = require('../models/Indicadores');
 const PreguntasFrecuentes = require('../models/PreguntasFrecuentes');
@@ -14,21 +16,55 @@ const Popups = require('../models/PopUps');
 
 class RespaldoController {
     static Indicator = async (req, res) => {
-        const { type, year } = req.params;
-        console.log("type ---->", type);
-        const url = `https://mindicador.cl/api/${type}/${year}`;
-        const { data } = await axios.get(url);
-        console.log(data);
-        const dataI = [];
-        if (data) {
-            data.serie.forEach(element => {
-
-            })
+        try{
+            const { type, year } = req.params;
+            console.log("type ---->", type);
+            const url = `https://mindicador.cl/api/${type}/${year}`;
+            const { data } = await axios.get(url);
+            console.log(data);
+            const dataI = [];
+            if (data) {
+                data.serie.forEach(element => {
+    
+                })
+            }
+            //const response = await Indicadores.deleteMany({tipo:{ $regex: new RegExp(type, 'i') },anio:year});
+    
+            //const insert = await Indicadores.insertMany(dataI);
+            return res.status(200).json({ code: 200, status: true, payload: data })
+        }catch(e){
+            return res.status(500).json(e);
         }
-        //const response = await Indicadores.deleteMany({tipo:{ $regex: new RegExp(type, 'i') },anio:year});
+       
+    }
 
-        //const insert = await Indicadores.insertMany(dataI);
-        return res.status(200).json({ code: 200, status: true, payload: data })
+
+    static FeriadoLegalR = async (req, res) => {
+        try{
+     
+            const url = `https://apis.digital.gob.cl/fl/feriados`;
+            const { data } = await axios.get(url);
+            console.log(data);
+            const dataI = [];
+            if (data) {
+                data.forEach(x=>{
+                    dataI.push({
+                        "nombre":x.nombre,
+                        "fecha":x.fecha,
+                        "irrenunciable":x.irrenunciable === 1 ? true:false,
+                        "tipo":x.tipo,
+                        "leyes":x.leyes
+                    })
+                })
+            }
+            const response = await FeriadoLegal.deleteMany();
+    
+            const insert = await FeriadoLegal.insertMany(dataI);
+            return res.status(200).json({ code: 200, status: true, payload: data })
+        }catch(e){
+            return res.status(500).json(e);
+        }
+       
     }
 
 
@@ -48,7 +84,6 @@ class RespaldoController {
 
             data.forEach(x => {
                 user.push({
-                    id: x.id_usuario,
                     nombre: x.nombre,
                     apellido: x.apellido,
                     rut: x.rut,
@@ -56,9 +91,9 @@ class RespaldoController {
                     direccion: x.direccion,
                     telefono: x.telefono,
                     password: x.password,
-                    hashpassword: x.password,
+                    hashpassword: encrypPassword(x.password),
                     resetPasswordLink: "",
-                    avatar: `https://portaldesoluciones/${x.url_foto}`,
+                    avatar: `https://portaldesoluciones.cl/${x.url_foto}`,
                     rol: x.perfil,
                     razonsocial: x.razonsocial,
                     numerodecontrato: x.numero_de_contrato,
@@ -80,9 +115,8 @@ class RespaldoController {
 
             const r = await Usuario.deleteMany();
 
-            console.log("r --->",r);
-
             const response = await Usuario.insertMany(user);
+          
 
             return res.status(200).json({ code: 200, status: true, payload: data })
         } catch (e) {

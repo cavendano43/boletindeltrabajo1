@@ -15,7 +15,26 @@ const FeriadoLegal = require('../models/FeriadoLegal');
 const Calendario = require('../models/Calendario');
 const Slider = require('../models/Slider');
 const Popups = require('../models/PopUps');
+
 class AdminController{
+
+
+    static addFeriadosLegales = async(req,res) => {
+        try{
+            logger.info(`[AdminController] addFeriadosLegales inicio`);
+            const body = req.body;
+            logger.info(`[AdminController] addFeriadosLegales body ${JSON.stringify(body)}`);
+            const model = new FeriadoLegal(body);
+            const response = await FeriadoLegal.save();
+
+            logger.info(`[AdminController] addFeriadosLegales fin`);
+            return res.status(200).json({code:200,message:"Feriado Legal guardado", payload:response});
+            
+        } catch(e) {
+            logger.info(`[AdminController] addFeriadosLegales error ${e}`);
+            return res.status(404).send({code:404,status:false,message:"error del servidor",errors:e});
+        }
+    }
 
     static getSlider = async(req,res)=>{
         try{
