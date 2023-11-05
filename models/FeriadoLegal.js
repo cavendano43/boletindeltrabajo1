@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 
 const FeriadoLegalchema = new Schema({
     nombre:String,
-    comentario:String,
+    comentarios:String,
     fecha:String,
     irrenunciable:Boolean,
     tipo:String,

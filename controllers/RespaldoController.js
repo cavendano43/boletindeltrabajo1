@@ -44,22 +44,10 @@ class RespaldoController {
      
             const url = `https://apis.digital.gob.cl/fl/feriados`;
             const { data } = await axios.get(url);
-            console.log(data);
-            const dataI = [];
-            if (data) {
-                data.forEach(x=>{
-                    dataI.push({
-                        "nombre":x.nombre,
-                        "fecha":x.fecha,
-                        "irrenunciable":x.irrenunciable === 1 ? true:false,
-                        "tipo":x.tipo,
-                        "leyes":x.leyes
-                    })
-                })
-            }
+   
             const response = await FeriadoLegal.deleteMany();
     
-            const insert = await FeriadoLegal.insertMany(dataI);
+            const insert = await FeriadoLegal.insertMany(data);
             return res.status(200).json({ code: 200, status: true, payload: data })
         }catch(e){
             return res.status(500).json(e);

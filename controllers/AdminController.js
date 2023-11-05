@@ -25,7 +25,7 @@ class AdminController{
             const body = req.body;
             logger.info(`[AdminController] addFeriadosLegales body ${JSON.stringify(body)}`);
             const model = new FeriadoLegal(body);
-            const response = await FeriadoLegal.save();
+            const response = await model.save();
 
             logger.info(`[AdminController] addFeriadosLegales fin`);
             return res.status(200).json({code:200,message:"Feriado Legal guardado", payload:response});
